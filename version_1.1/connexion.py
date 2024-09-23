@@ -12,8 +12,11 @@ class LoginScreen(BoxLayout):
         self.padding = [50, 100]  # Espacement autour
         self.spacing = 20  # Espace entre les widgets
 
+
+
+
         # Titre de la page "Login"
-        self.add_widget(Label(text="Login", font_size=32, size_hint_y=None, height=50))
+        self.add_widget(Label(text="Login", font_size=70, size_hint_y=None, height=30))
 
         # Champ de texte pour le nom d'utilisateur
         self.add_widget(Label(text="Nom d'utilisateur:"))

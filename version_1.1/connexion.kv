@@ -1,0 +1,31 @@
+<LoginScreen>:
+    orientation: 'vertical'
+    padding: [50, 100]
+    spacing: 20
+
+    Label:
+        text: "Login"
+        font_size: 32
+        size_hint_y: None
+        height: 50
+
+    Label:
+        text: "Nom d'utilisateur:"
+
+    TextInput:
+        id: username_input
+        multiline: False
+
+    Label:
+        text: "Mot de passe:"
+
+    TextInput:
+        id: password_input
+        password: True
+        multiline: False
+
+    Button:
+        text: "Se connecter"
+        size_hint_y: None
+        height: 50
+        on_press: root.verify_credentials()
