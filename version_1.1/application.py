@@ -12,14 +12,14 @@ class LoginScreen(BoxLayout):
         self.orientation = 'vertical'
         
         # Label pour le nom d'utilisateur
-        self.add_widget(Label(text="Nom d'utilisateur:"))
+        self.add_widget(Label(text="Nom d'utilisateur :"))
         
         # Champ de texte pour le nom d'utilisateur
         self.username_input = TextInput(multiline=False)
         self.add_widget(self.username_input)
         
         # Label pour le mot de passe
-        self.add_widget(Label(text="Mot de passe:"))
+        self.add_widget(Label(text="Mot de passe :"))
         
         # Champ de texte pour le mot de passe
         self.password_input = TextInput(password=True, multiline=False)
