@@ -12,7 +12,7 @@ class Login(Screen):
         app.username = loginText
         app.password = passwordText
 
-        if app.username == "salut" and app.password == "salut":
+        if app.username == "toto" and app.password == "toto":
 
             self.manager.transition = SlideTransition(direction="left")
             self.manager.current = 'connected'
