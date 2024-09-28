@@ -1,0 +1,11 @@
+<Not_connected>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        Label:
+            text: "You are not connected "
+            font_size: 32
+        Button:
+            text: "Retry"
+            font_size: 24
+            on_press: root.disconnect()

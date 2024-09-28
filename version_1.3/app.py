@@ -4,6 +4,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
 import os
 
 from connected import Connected
+from not_connected import Not_connected
 
 class Login(Screen):
     def do_login(self, loginText, passwordText):
@@ -21,9 +22,16 @@ class Login(Screen):
             app.config.read(app.get_application_config())
             app.config.write()
         else:
-            print("mauvais mdp")
+
+            self.manager.transition = SlideTransition(direction="right")
+            self.manager.current = 'disconnected'
+
+            app.config.read(app.get_application_config())
+            app.config.write()
+
+
             self.resetForm()
-            
+
 
     def resetForm(self):
         self.ids['login'].text = ""
@@ -38,6 +46,8 @@ class LoginApp(App):
 
         manager.add_widget(Login(name='login'))
         manager.add_widget(Connected(name='connected'))
+        manager.add_widget(Not_connected(name='disconnected'))  # Ajouter l'écran pour mauvais mdp
+
 
         return manager
 
@@ -54,8 +64,7 @@ class LoginApp(App):
             '%s/config.cfg' % (conf_directory)
         )
 
+
+
 if __name__ == '__main__':
     LoginApp().run()
-
-
-#adel est gay
