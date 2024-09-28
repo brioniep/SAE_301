@@ -1,28 +1,3 @@
-<SuccessScreen>:
-    BoxLayout:
-        orientation: 'vertical'
-        Label:
-            text: "Vous êtes connecté !"
-            font_size: "48dp"
-            color: "#FF5623"
-            halign: "center"
-            size_hint_y: None
-            height: "100dp"
-
-        Button:
-            text: "Retour"
-            size_hint_y: None
-            height: "50dp"
-            on_release: root.on_back()  # Appeler la méthode de retour
-
-
-
-
-
-
-
-
-
 <LoginScreen>:
     Image:
         source: "fond1.png"
@@ -64,7 +39,7 @@
         size_hint_y: None
         height: "50dp"
         pos_hint: {'center_x': .5, 'center_y': .25}
-        on_release: root.on_login()  # Correction ici
+        on_release: root.on_login()
 
     Label:
         id: message_label
@@ -72,3 +47,26 @@
         font_size: "20dp"
         color: "#D90115"
         pos_hint: {'center_x': .5, 'center_y': .15}
+
+
+
+
+
+
+
+<SuccessScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: "Vous êtes connecté !"
+            font_size: "48dp"
+            color: "#FF5623"
+            halign: "center"
+            size_hint_y: None
+            height: "100dp"
+
+        Button:
+            text: "Retour"
+            size_hint_y: None
+            height: "50dp"
+            on_release: root.on_back()
