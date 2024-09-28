@@ -1,0 +1,22 @@
+<testApp>:
+    Screen:
+        Image:
+            source: "fond.png"
+            size_hint: 1, 1  # Remplit toute la taille de l'écran
+            width: "360"
+            height: "640"
+            pos_hint: {'x': 0, 'y': 0}  # Positionne l'image dans le coin supérieur gauche
+
+        Label:
+            text: "Bienvenue"
+            font_size:"48dp"
+            halign: "center"
+            color:"#FF5623"
+            pos_hint: {'center_y':.8}
+        
+        TextInput:
+            hint_text: "Username"
+            font_size: "20dp" # size entre 14 et 16 max pour android
+            pos_hint: {'x': 4, 'y': 2}
+
+        

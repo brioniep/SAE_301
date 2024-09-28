@@ -4,7 +4,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
 import os
 
 from connected import Connected
-from not_connected import Not_connected
+from NotConnected import NotConnected
 
 class Login(Screen):
     def do_login(self, loginText, passwordText):
@@ -46,7 +46,7 @@ class LoginApp(App):
 
         manager.add_widget(Login(name='login'))
         manager.add_widget(Connected(name='connected'))
-        manager.add_widget(Not_connected(name='disconnected'))  # Ajouter l'écran pour mauvais mdp
+        manager.add_widget(NotConnected(name='disconnected'))  # Ajouter l'écran pour mauvais mdp
 
 
         return manager
