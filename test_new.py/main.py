@@ -4,12 +4,18 @@ from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
 
 
+
+
+
+
+
+
 class LoginScreen(Screen):
     def on_login(self):
         username = self.ids.username_input.text
         password = self.ids.password_input.text
 
-        if username == "leonard" and password == "toto":            
+        if username == "" and password == "":            
             self.resetForm()
             self.resetLabel()
             self.manager.transition = SlideTransition(direction="left")  # Glisse vers la gauche
@@ -17,6 +23,7 @@ class LoginScreen(Screen):
 
         else:
             self.ids.message_label.text = "Nom d'utilisateur ou mdp incorrect"
+            self.resetForm()
 
     def resetForm(self):
         self.ids.username_input.text = ""
@@ -24,6 +31,11 @@ class LoginScreen(Screen):
     
     def resetLabel(self):
         self.ids.message_label.text = ""
+
+
+
+
+
 
 
 class SuccessScreen(Screen):
