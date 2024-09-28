@@ -21,6 +21,7 @@
         size_hint_y: None
         height: "40dp"
         pos_hint: {'center_x': .5, 'center_y': .55}
+        
 
     TextInput:
         id: password_input
@@ -55,18 +56,22 @@
 
 
 <SuccessScreen>:
-    BoxLayout:
-        orientation: 'vertical'
-        Label:
-            text: "Vous êtes connecté !"
-            font_size: "48dp"
-            color: "#FF5623"
-            halign: "center"
-            size_hint_y: None
-            height: "100dp"
+    Image:
+        source: "fond1.png"
+        size_hint: (1, 1)
+        allow_stretch: True
+        keep_ratio: False
+        pos_hint: {'x': 0, 'y': 0}
 
-        Button:
-            text: "Retour"
-            size_hint_y: None
-            height: "50dp"
-            on_release: root.on_back()
+    Label:
+        text: "RasberryPI page"
+        font_size: "45dp"
+        halign: "center"
+        color: "#CCCCCC"
+        pos_hint: {'center_y': .9}
+
+    Button:
+        text: "Déconnexion"
+        size_hint_y: None
+        height: "50dp"
+        on_release: root.on_back()
