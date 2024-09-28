@@ -1,22 +1,42 @@
 <testApp>:
     Screen:
         Image:
-            source: "fond.png"
-            size_hint: 1, 1  # Remplit toute la taille de l'écran
-            width: "360"
-            height: "640"
+            source: "fond1.png"
+            size_hint: (1, 1)  # Remplit toute la taille de l'écran
             pos_hint: {'x': 0, 'y': 0}  # Positionne l'image dans le coin supérieur gauche
+            keep_ratio: False
+            allow_stretch: True  # Étire l'image pour remplir l'écran
+
 
         Label:
-            text: "Bienvenue"
-            font_size:"48dp"
+            text: "Connexion"
+            font_size: "48dp"
             halign: "center"
-            color:"#FF5623"
-            pos_hint: {'center_y':.8}
-        
+            color: "#CCCCCC"
+            pos_hint: {'center_y': .8}
+
         TextInput:
             hint_text: "Username"
-            font_size: "20dp" # size entre 14 et 16 max pour android
-            pos_hint: {'x': 4, 'y': 2}
+            font_size: "20dp"
+            size_hint_x: 0.8
+            size_hint_y: None
+            height: "40dp"
+            pos_hint: {'center_x': .5, 'center_y': .55}
+            color: '##D3D3D3'
 
-        
+        TextInput:
+            hint_text: "Password"
+            font_size: "20dp"
+            size_hint_x: 0.8
+            size_hint_y: None
+            height: "40dp"
+            pos_hint: {'center_x': .5, 'center_y': .45}
+            password: True
+
+        Button:
+            text: 'Connexion'
+            font_size: "20dp"
+            size_hint_x: 0.9
+            size_hint_y: None
+            height: "50dp"
+            pos_hint: {'center_x': .5, 'center_y': .25}
