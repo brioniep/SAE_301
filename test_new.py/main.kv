@@ -1,4 +1,4 @@
-<testApp>:
+<TestApp>:
     Screen:
         Image:
             source: "fond1.png"
@@ -16,15 +16,17 @@
             pos_hint: {'center_y': .8}
 
         TextInput:
+            id: username_input
             hint_text: "Username"
             font_size: "20dp"
             size_hint_x: 0.8
             size_hint_y: None
             height: "40dp"
             pos_hint: {'center_x': .5, 'center_y': .55}
-            color: '##D3D3D3'
+            color: '#D3D3D3'
 
         TextInput:
+            id: password_input
             hint_text: "Password"
             font_size: "20dp"
             size_hint_x: 0.8
@@ -40,3 +42,11 @@
             size_hint_y: None
             height: "50dp"
             pos_hint: {'center_x': .5, 'center_y': .25}
+            on_release: root.on_login()
+        
+        Label:
+            id: message_label  # Ajoutez un identifiant pour le message
+            text: ""
+            font_size: "20dp"
+            color: "#D3D3D3"
+            pos_hint: {'center_x': .5, 'center_y': .15}  # Positionnez le label
