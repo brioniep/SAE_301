@@ -1,52 +1,74 @@
-<TestApp>:
-    Screen:
-        Image:
-            source: "fond1.png"
-            size_hint: (1, 1)  # Remplit toute la taille de l'écran
-            pos_hint: {'x': 0, 'y': 0}  # Positionne l'image dans le coin supérieur gauche
-            keep_ratio: False
-            allow_stretch: True  # Étire l'image pour remplir l'écran
-
-
+<SuccessScreen>:
+    BoxLayout:
+        orientation: 'vertical'
         Label:
-            text: "Connexion"
+            text: "Vous êtes connecté !"
             font_size: "48dp"
+            color: "#FF5623"
             halign: "center"
-            color: "#CCCCCC"
-            pos_hint: {'center_y': .8}
-
-        TextInput:
-            id: username_input
-            hint_text: "Username"
-            font_size: "20dp"
-            size_hint_x: 0.8
             size_hint_y: None
-            height: "40dp"
-            pos_hint: {'center_x': .5, 'center_y': .55}
-            color: '#D3D3D3'
-
-        TextInput:
-            id: password_input
-            hint_text: "Password"
-            font_size: "20dp"
-            size_hint_x: 0.8
-            size_hint_y: None
-            height: "40dp"
-            pos_hint: {'center_x': .5, 'center_y': .45}
-            password: True
+            height: "100dp"
 
         Button:
-            text: 'Connexion'
-            font_size: "20dp"
-            size_hint_x: 0.9
+            text: "Retour"
             size_hint_y: None
             height: "50dp"
-            pos_hint: {'center_x': .5, 'center_y': .25}
-            on_release: root.on_login()
-        
-        Label:
-            id: message_label  # Ajoutez un identifiant pour le message
-            text: ""
-            font_size: "20dp"
-            color: "#D3D3D3"
-            pos_hint: {'center_x': .5, 'center_y': .15}  # Positionnez le label
+            on_release: root.on_back()  # Appeler la méthode de retour
+
+
+
+
+
+
+
+
+
+<LoginScreen>:
+    Image:
+        source: "fond1.png"
+        size_hint: (1, 1)
+        allow_stretch: True
+        keep_ratio: False
+        pos_hint: {'x': 0, 'y': 0}
+
+    Label:
+        text: "Connexion"
+        font_size: "48dp"
+        halign: "center"
+        color: "#CCCCCC"
+        pos_hint: {'center_y': .8}
+
+    TextInput:
+        id: username_input
+        hint_text: "Username"
+        font_size: "20dp"
+        size_hint_x: 0.8
+        size_hint_y: None
+        height: "40dp"
+        pos_hint: {'center_x': .5, 'center_y': .55}
+
+    TextInput:
+        id: password_input
+        hint_text: "Password"
+        font_size: "20dp"
+        size_hint_x: 0.8
+        size_hint_y: None
+        height: "40dp"
+        pos_hint: {'center_x': .5, 'center_y': .45}
+        password: True
+
+    Button:
+        text: 'Connexion'
+        font_size: "20dp"
+        size_hint_x: 0.9
+        size_hint_y: None
+        height: "50dp"
+        pos_hint: {'center_x': .5, 'center_y': .25}
+        on_release: root.on_login()  # Correction ici
+
+    Label:
+        id: message_label
+        text: ""
+        font_size: "20dp"
+        color: "#D90115"
+        pos_hint: {'center_x': .5, 'center_y': .15}

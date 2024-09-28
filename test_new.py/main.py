@@ -1,37 +1,55 @@
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.core.window import Window
-from kivy.uix.screenmanager import Screen
+from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
 
 
-class TestApp(Screen) :
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        pass
+class LoginScreen(Screen):
 
-    
-    def on_login(self,):
+    def on_login(self):
         username = self.ids.username_input.text
         password = self.ids.password_input.text
 
-        if username == "leonard" and password =="toto":
-            self.ids.message_label.text = "Vous etes connecté ! "
-        
+        if username == "leonard" and password == "toto":            
+            self.resetForm()
+            self.manager.current = 'success'
+            self.manager.transition = SlideTransition(direction="left")
+
+
         else:
-            self.ids.message_label.text = "Nom d'utilisateur ou mdp incorrect"
+            self.ids.message_label.text = "Nom d'utilisateur mdp incorrect"
 
 
 
+    def resetForm(self):
+        self.ids.username_input.text = ""
+        self.ids.password_input.text = ""
+
+
+
+
+
+class SuccessScreen(Screen):
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def on_back(self):
+        self.manager.transition = SlideTransition(direction="right")  # Glisse vers la gauche
+        self.manager.current = 'login'  # Revenir à l'écran de connexion
 
 
 
 
 class MyApp(App):
     def build(self):
-        
-        return TestApp()
-    
+        sm = ScreenManager()
+        sm.add_widget(LoginScreen(name='login'))
+        sm.add_widget(SuccessScreen(name='success'))
+        return sm
+
+
 if __name__ == '__main__':
-    Window.size = (360,640)
+    Window.size = (360, 640)
     Builder.load_file("main.kv")
     MyApp().run()
