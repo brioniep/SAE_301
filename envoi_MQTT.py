@@ -1,9 +1,9 @@
 import paho.mqtt.client as mqtt
 
 class MQTT():
-    def __init__(self):
-        self.__broker = "broker.hivemq.com"
-        self.__topics = "IUT/SAE3.01/prise"
+    def __init__(self, broker= "broker.hivemq.com" , topic = "IUT/SAE3.01/prise"):
+        self.__broker = broker
+        self.__topics = topic
         self.__client = None
     
 # fonction pour subcribe au topic MQTT
