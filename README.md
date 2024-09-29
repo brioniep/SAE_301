@@ -47,6 +47,6 @@ envoyeur.envoi("Bonjour, ceci est un message de test")
 * Assurez-vous d'avoir installé la bibliothèque Paho-MQTT pour utiliser ce script.
 * Le script utilise la méthode `loop_forever()` pour démarrer la boucle de réception, ce qui signifie que le script va rester en attente de messages jusqu'à ce que vous l'arrêtiez manuellement.
 
-[![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)](https://github.com/votre-nom/mqtt-client)
+[![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)]
 
-Remplacez `votre-nom` par votre nom d'utilisateur GitHub et `mqtt-client` par le nom de votre dépôt.
+
