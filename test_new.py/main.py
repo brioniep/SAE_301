@@ -4,12 +4,6 @@ from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
 
 
-
-
-
-
-
-
 class LoginScreen(Screen):
     def on_login(self):
         username = self.ids.username_input.text
