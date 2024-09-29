@@ -1,5 +1,3 @@
-Voici le README en Markdown :
-
 # MQTT Client Script
 
 Ce script fournit une classe MQTT qui permet de se connecter à un serveur MQTT, de s'abonner à un topic et d'envoyer des messages.
@@ -47,6 +45,6 @@ envoyeur.envoi("Bonjour, ceci est un message de test")
 * Assurez-vous d'avoir installé la bibliothèque Paho-MQTT pour utiliser ce script.
 * Le script utilise la méthode `loop_forever()` pour démarrer la boucle de réception, ce qui signifie que le script va rester en attente de messages jusqu'à ce que vous l'arrêtiez manuellement.
 
-[![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)]
+![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)
 
 
