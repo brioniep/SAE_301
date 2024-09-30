@@ -3,6 +3,8 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
+import time
+
 
 
 class LoginScreen(Screen):
@@ -16,9 +18,10 @@ class LoginScreen(Screen):
             self.manager.transition = SlideTransition(direction="left")  # Glisse vers la gauche
             self.manager.current = 'success'  # Changer d'écran
 
-        else:
-            self.ids.message_label.text = "Nom d'utilisateur ou mdp incorrect"
+        else:            
             self.resetForm()
+            self.ids.message_label.text = "Nom d'utilisateur ou mdp incorrect"
+            
 
     def resetForm(self):
         self.ids.username_input.text = ""
