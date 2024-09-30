@@ -24,6 +24,7 @@ L'objet MQTT propose les méthodes suivantes :
 
 * `connection()`: établit la connexion au serveur MQTT
 * `envoi(message)`: envoie un message au topic abonné
+* `get_messages()`: return un message reçus du topic abonné
 
 ## Exemple d'utilisation
 
@@ -33,6 +34,7 @@ from mqtt_client import MQTT
 envoyeur = MQTT()
 envoyeur.connection()
 envoyeur.envoi("Bonjour, ceci est un message de test")
+envoyeur.get_messages()
 ```
 
 ## Paramètres
@@ -42,8 +44,8 @@ envoyeur.envoi("Bonjour, ceci est un message de test")
 
 ## Remarques
 
-* Assurez-vous d'avoir installé la bibliothèque Paho-MQTT pour utiliser ce script.
-* Le script utilise la méthode `loop_forever()` pour démarrer la boucle de réception, ce qui signifie que le script va rester en attente de messages jusqu'à ce que vous l'arrêtiez manuellement.
+* Assurez-vous d'avoir installé la bibliothèque Paho-MQTT pour utiliser ce script. 
+* Le script utilise la méthode `loop_start()` pour démarrer la boucle de réception, ce qui signifie que le script va rester en attente de messages jusqu'à ce que vous l'arrêtiez manuellement.
 
 ![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)
 

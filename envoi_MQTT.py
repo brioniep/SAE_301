@@ -1,10 +1,11 @@
 import paho.mqtt.client as mqtt
-
+import time
 class MQTT():
     def __init__(self, broker= "broker.hivemq.com" , topic = "IUT/SAE3.01/prise"):
         self.__broker = broker
         self.__topics = topic
         self.__client = None
+        self.__message = None
     
 # fonction pour subcribe au topic MQTT
     def __on_connect(self, client, userdata, flags, rc):
@@ -14,9 +15,9 @@ class MQTT():
 # fonction pour lire les messages
     def __on_message(self, client, userdata, msg):
         message = msg.payload.decode() # récupere les messages
-        print(f"Topic: {self.__topics}\nMessage: {message}\n")
-
-        return message #pour l'utiliser dans d'autre fonction
+        
+        self.__message = message
+        
 
 # fonction d'envoi de message via MQTT
     def envoi(self, message):
@@ -29,16 +30,27 @@ class MQTT():
         else:
             print("Client non connecté")
 
+    # fonction pour retourner les messages reçus
+    def get_messages(self):
+        if self.__message is not None:
+            return self.__message
+        
+    
 # fonction pour initialiser la connection et creer le client MQTT 
     def connection(self):
         self.__client = mqtt.Client()
         self.__client.on_connect = self.__on_connect
         self.__client.on_message = self.__on_message
         self.__client.connect(self.__broker, 1883, 60)
-        self.__client.loop_forever()  # utiliser loop_forever() pour démarrer la boucle de réception
+        self.__client.loop_start()  # utiliser loop_start() pour démarrer la boucle de réception dans un thread séparé
 
 
 #test
 if __name__ == "__main__":
     envoyeur = MQTT()
     envoyeur.connection()
+
+    while True:
+        
+        print("message reçu : ", envoyeur.get_messages())
+        time.sleep(1)
