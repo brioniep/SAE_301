@@ -75,7 +75,7 @@
         pos_hint: {'x': 0, 'y': 0}
 
     Label:
-        text: "RasberryPI page"
+        text: "ESP32 control"
         font_size: "45dp"
         halign: "center"
         color: "#CCCCCC"
@@ -94,9 +94,31 @@
         height: "50dp"
         pos_hint: {'center_x': .5, 'center_y': .75}
     
+
+
+
+    # Partie des températures
     Label:
-        id: message_label
-        text: "Température"
+        id: temperature_1
+        text: "Température : "
         font_size: "20dp"
         color: "#CCCCCC"
         pos_hint: {'center_x': .3, 'center_y': .64}
+        
+    Label:
+        id: temperature_2
+        text: "40"
+        font_size: "20dp"
+        color: "#CCCCCC"
+        pos_hint: {'center_x': .5, 'center_y': .64}
+    Label:
+        id: temperature_3
+        text: "C°"
+        font_size: "20dp"
+        color: "#CCCCCC"
+        pos_hint: {'center_x': .57, 'center_y': .64}
+    
+
+
+
+
