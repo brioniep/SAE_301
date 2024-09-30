@@ -66,6 +66,7 @@
 
 
 
+
 <SuccessScreen>:
     Image:
         source: "fond1.png"
@@ -75,7 +76,8 @@
         pos_hint: {'x': 0, 'y': 0}
 
     Label:
-        text: "ESP32 control"
+        text: '[u]ESP32 control[/u]'
+        markup: True
         font_size: "45dp"
         halign: "center"
         color: "#CCCCCC"
@@ -121,12 +123,83 @@
     
 
 
+    Label:
+        text: "Plages horraires"
+        font_size: "20dp"
+        color: "#CCCCCC"
+        pos_hint: {'center_x': .3, 'center_y': .55}
 
 
 
 
+    # Plages horraires 1
+
+    Label:
+        text: "De"
+        font_size: "20dp"
+        color: "#CCCCCC"
+        pos_hint: {'center_x': .15, 'center_y': .45}
+
+    TextInput:
+        hint_text: "hh, mm"
+        font_size: "20dp"
+        size_hint_x: 0.25
+        size_hint_y: 0.05
+        height: "40dp"
+        pos_hint: {'center_x': .35, 'center_y': .45}
+
+    Label:
+        text: "à"
+        font_size: "20dp"
+        color: "#CCCCCC"
+        pos_hint: {'center_x': .53, 'center_y': .45}
+
+    TextInput:
+        hint_text: "hh, mm"
+        font_size: "20dp"
+        size_hint_x: 0.25
+        size_hint_y: 0.05
+        height: "40dp"
+        pos_hint: {'center_x': .7, 'center_y': .45}
+
+    # Plages horraires 2
+
+    Label:
+        text: "De"
+        font_size: "20dp"
+        color: "#CCCCCC"
+        pos_hint: {'center_x': .15, 'center_y': .35}
+
+    TextInput:
+        hint_text: "hh, mm"
+        font_size: "20dp"
+        size_hint_x: 0.25
+        size_hint_y: 0.05
+        height: "40dp"
+        pos_hint: {'center_x': .35, 'center_y': .35}
+
+    Label:
+        text: "à"
+        font_size: "20dp"
+        color: "#CCCCCC"
+        pos_hint: {'center_x': .53, 'center_y': .35}
+
+    TextInput:
+        hint_text: "hh, mm"
+        font_size: "20dp"
+        size_hint_x: 0.25
+        size_hint_y: 0.05
+        height: "40dp"
+        pos_hint: {'center_x': .7, 'center_y': .35}
 
 
-
+    Button:
+        text: 'Save'
+        font_size: "20dp"
+        size_hint_x: 0.4
+        size_hint_y: None
+        height: "50dp"
+        pos_hint: {'center_x': .5, 'center_y': .2}
+    
 
 
