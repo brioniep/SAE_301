@@ -89,6 +89,8 @@
 
     Button:
         text:"ON/OFF"
+        font_size: "25dp"
+
         size_hint_x: 0.8
         size_hint_y: None
         height: "50dp"
@@ -104,7 +106,6 @@
         font_size: "20dp"
         color: "#CCCCCC"
         pos_hint: {'center_x': .3, 'center_y': .64}
-        
     Label:
         id: temperature_2
         text: "40"
@@ -122,3 +123,36 @@
 
 
 
+
+
+
+
+
+
+
+    Label:
+        text: "Plage horraire 1"
+        font_size: "20dp"
+        color: "#CCCCCC"
+        pos_hint: {'center_x': .3, 'center_y': .55}
+        color: "#FFFFFF"
+
+    Label:
+        text: "De"
+        font_size: "20dp"
+        color: "#CCCCCC"
+        pos_hint: {'center_x': .15, 'center_y': .48}
+
+    TextInput:
+        hint_text: "hh/mm"
+        font_size: "20dp"
+        size_hint_x: 0.2
+        size_hint_y: 0.05
+        height: "40dp"
+        pos_hint: {'center_x': .34, 'center_y': .48}
+
+    Label:
+        text: "à"
+        font_size: "20dp"
+        color: "#CCCCCC"
+        pos_hint: {'center_x': .5, 'center_y': .48}
