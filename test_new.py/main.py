@@ -3,7 +3,7 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
-import time
+from kivy.clock import Clock
 
 
 
@@ -21,7 +21,7 @@ class LoginScreen(Screen):
         else:            
             self.resetForm()
             self.ids.message_label.text = "Nom d'utilisateur ou mdp incorrect"
-            
+            Clock.schedule_once(self.clear_message, 2.5)  # Effacer le message après 2 secondes
 
     def resetForm(self):
         self.ids.username_input.text = ""
@@ -30,6 +30,8 @@ class LoginScreen(Screen):
     def resetLabel(self):
         self.ids.message_label.text = ""
 
+    def clear_message(self, dt):
+        self.ids.message_label.text = ""
 
 
 

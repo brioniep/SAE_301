@@ -130,8 +130,8 @@
         size_hint: (0.8, None)
         height: self.minimum_height
         pos_hint: {'center_x': .5, 'center_y': .45}
-        padding: 10
-        spacing: 10
+        padding: [10, 10, 10, 20]  # Ajout de plus d'espace en bas
+        spacing: 20  # Augmenter l'espacement entre les éléments
         canvas.before:
             Color:
                 rgba: (1, 1, 1, 0.2)
@@ -191,6 +191,7 @@
             size_hint_y: None
             height: "40dp"
             spacing: 10
+            padding: [0, 20, 0, 0]  # Ajouter du padding en haut pour espacer les lignes
 
             Label:
                 text: "De"
@@ -223,6 +224,18 @@
                 height: "40dp"
                 foreground_color: "#FFFFFF"  # Blanc
                 background_color: "#2A2A2A"  # Gris foncé
+
+
+
+
+
+    Label:
+        id: bad_format
+        text: "mauvais format des horraires"
+        font_size: "20dp"
+        halign: "center"
+        color: "#FFFFFF"
+        pos_hint: {'center_y': .28}
 
     Button:
         text: 'Save'
