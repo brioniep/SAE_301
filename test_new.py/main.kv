@@ -162,11 +162,12 @@
                 width: self.texture_size[0] + 10
 
             TextInput:
-                hint_text: "hh, mm"
+                id: horaires_1
+                hint_text: "HH:MM"
                 font_size: "20dp"
                 size_hint_x: 0.25
                 size_hint_y: None
-                height: "40dp"
+                height: "30dp"
                 foreground_color: "#FFFFFF"  # Blanc
                 background_color: "#2A2A2A"  # Gris foncé
 
@@ -178,11 +179,12 @@
                 width: self.texture_size[0] + 10
 
             TextInput:
-                hint_text: "hh, mm"
+                id: horaires_2
+                hint_text: "HH:MM"
                 font_size: "20dp"
                 size_hint_x: 0.25
                 size_hint_y: None
-                height: "40dp"
+                height: "30dp"
                 foreground_color: "#FFFFFF"  # Blanc
                 background_color: "#2A2A2A"  # Gris foncé
 
@@ -201,11 +203,12 @@
                 width: self.texture_size[0] + 10
 
             TextInput:
-                hint_text: "hh, mm"
+                id: horaires_3
+                hint_text: "HH:MM"
                 font_size: "20dp"
                 size_hint_x: 0.25
                 size_hint_y: None
-                height: "40dp"
+                height: "30dp"
                 foreground_color: "#FFFFFF"  # Blanc
                 background_color: "#2A2A2A"  # Gris foncé
 
@@ -217,24 +220,17 @@
                 width: self.texture_size[0] + 10
 
             TextInput:
-                hint_text: "hh, mm"
+                id: horaires_4
+                hint_text: "HH:MM"
                 font_size: "20dp"
                 size_hint_x: 0.25
                 size_hint_y: None
-                height: "40dp"
+                height: "30dp"
                 foreground_color: "#FFFFFF"  # Blanc
                 background_color: "#2A2A2A"  # Gris foncé
-
-
-
-
-
-
-
-
     Label:
         id: bad_format1
-        text: "mauvais format des horraires"
+        text: ""
         font_size: "20dp"
         halign: "center"
         color: "#FF0000"  # Rouge
@@ -242,7 +238,7 @@
 
     Label:
         id: bad_format2
-        text: "enregistré avec succès"
+        text: ""
         font_size: "20dp"
         halign: "center"
         color: "#00FF00"  # Vert
@@ -261,3 +257,4 @@
         pos_hint: {'center_x': .5, 'center_y': .2}
         background_color: "#1E90FF"  # Bleu clair
         color: "#FFFFFF"  # Blanc
+        on_release: root.on_save()
