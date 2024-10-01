@@ -37,7 +37,6 @@ class LoginScreen(Screen):
 
 
 
-
 class SuccessScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -45,6 +44,8 @@ class SuccessScreen(Screen):
     def on_back(self):
         self.manager.transition = SlideTransition(direction="right")  # Glisse vers la droite
         self.manager.current = 'login'  # Revenir à l'écran de connexion
+
+    
 
 
 class MyApp(App):
