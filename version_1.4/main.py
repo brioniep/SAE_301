@@ -46,66 +46,8 @@ class SuccessScreen(Screen):
         self.manager.transition = SlideTransition(direction="right")  # Glisse vers la droite
         self.manager.current = 'login'  # Revenir à l'écran de connexion
 
-    def clear_messages(self, dt):
-        self.ids.bad_format1.text = ""
-        self.ids.bad_format2.text = ""
+    
 
-    def on_save(self):
-        champ1 = self.ids.horaires_1.text
-        champ2 = self.ids.horaires_2.text
-        champ3 = self.ids.horaires_3.text
-        champ4 = self.ids.horaires_4.text
-
-        def is_valid_time_format(time_str):
-            if not time_str:
-                return False  # Considérer les champs vides comme invalides
-            try:
-                time.strptime(time_str, '%H:%M')
-                return True
-            except ValueError:
-                return False
-
-        # Vérification des paires 1 et 2
-        pair1_valid = is_valid_time_format(champ1) and is_valid_time_format(champ2)
-        pair1_empty = not champ1 and not champ2
-
-        # Vérification des paires 3 et 4
-        pair2_valid = is_valid_time_format(champ3) and is_valid_time_format(champ4)
-        pair2_empty = not champ3 and not champ4
-
-        if pair1_empty and pair2_empty:
-            self.ids.bad_format1.text = ""
-            self.ids.bad_format2.text = ""
-        elif pair1_valid and pair2_valid:
-            self.ids.bad_format1.text = "Bon format"
-            self.ids.bad_format1.color = (0, 1, 0, 1)  # Vert
-            self.ids.bad_format2.text = "Bon format"
-            self.ids.bad_format2.color = (0, 1, 0, 1)  # Vert
-        elif pair1_valid and pair2_empty:
-            self.ids.bad_format1.text = "Bon format"
-            self.ids.bad_format1.color = (0, 1, 0, 1)  # Vert
-            self.ids.bad_format2.text = ""
-        elif pair2_valid and pair1_empty:
-            self.ids.bad_format2.text = "Bon format"
-            self.ids.bad_format2.color = (0, 1, 0, 1)  # Vert
-            self.ids.bad_format1.text = ""
-        else:
-            self.ids.bad_format1.text = "Mauvais format"
-            self.ids.bad_format1.color = (1, 0, 0, 1)  # Rouge
-            self.ids.bad_format2.text = "Mauvais format"
-            self.ids.bad_format2.color = (1, 0, 0, 1)  # Rouge
-
-            # Effacer le texte des champs incorrects
-            if not is_valid_time_format(champ1):
-                self.ids.horaires_1.text = ""
-            if not is_valid_time_format(champ2):
-                self.ids.horaires_2.text = ""
-            if not is_valid_time_format(champ3):
-                self.ids.horaires_3.text = ""
-            if not is_valid_time_format(champ4):
-                self.ids.horaires_4.text = ""
-
-        Clock.schedule_once(self.clear_messages, 3)  # Effacer les messages après 3 secondes
 
 
 
