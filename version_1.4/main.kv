@@ -54,6 +54,26 @@
         color: "#FF4500"  # Rouge orangé
         pos_hint: {'center_x': .5, 'center_y': .15}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <SuccessScreen>:
     Image:
         source: "fond1.png"
@@ -81,18 +101,19 @@
     Button:
         text: "ON/OFF"
         font_size: "25dp"
-        size_hint_x: 0.8
+        size_hint_x: 0.65
         size_hint_y: None
-        height: "50dp"
+        height: "40dp"
         pos_hint: {'center_x': .5, 'center_y': .75}
         background_color: "#1E90FF"  # Bleu clair
         color: "#FFFFFF"  # Blanc
 
+    # Plage Horaire 1
     BoxLayout:
-        orientation: 'horizontal'
+        orientation: 'vertical'
         size_hint: (0.8, None)
-        height: "40dp"
-        pos_hint: {'center_x': .5, 'center_y': .64}
+        height: "80dp"
+        pos_hint: {'center_x': .5, 'center_y': .59}
         canvas.before:
             Color:
                 rgba: (1, 1, 1, 0.2)
@@ -101,37 +122,115 @@
                 pos: self.pos
                 radius: [10]
 
-        Label:
-            id: temperature_1
-            text: "Température : "
-            font_size: "20dp"
-            color: "#FFFFFF"  # Blanc
-            size_hint_x: None
-            width: self.texture_size[0] + 10
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: "40dp"
 
-        Label:
-            id: temperature_2
-            text: "40"
-            font_size: "20dp"
-            color: "#FFFFFF"  # Blanc
-            size_hint_x: None
-            width: self.texture_size[0] + 10
+            Label:
+                text: "Heure de début : "
+                font_size: "20dp"
+                color: "#FFFFFF"
 
-        Label:
-            id: temperature_3
-            text: "°C"
-            font_size: "20dp"
-            color: "#FFFFFF"  # Blanc
-            size_hint_x: None
-            width: self.texture_size[0] + 10
+            Spinner:
+                id: start_hour
+                text: '00'
+                values: [str(i).zfill(2) for i in range(24)]  # 00-23
+                size_hint: None, None
+                size: "60dp", "44dp"
 
-    Label:
-        id: bad_message
-        text: ""
-        font_size: "20dp"
-        halign: "center"
-        color: "#FF0000"  # Rouge
-        pos_hint: {'center_y': .28}
+            Spinner:
+                id: start_minute
+                text: '00'
+                values: [str(i).zfill(2) for i in range(60)]  # 00-59
+                size_hint: None, None
+                size: "60dp", "44dp"
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: "40dp"
+
+            Label:
+                text: "Heure de fin : "
+                font_size: "20dp"
+                color: "#FFFFFF"
+
+            Spinner:
+                id: end_hour
+                text: '00'
+                values: [str(i).zfill(2) for i in range(24)]  # 00-23
+                size_hint: None, None
+                size: "60dp", "44dp"
+
+            Spinner:
+                id: end_minute
+                text: '00'
+                values: [str(i).zfill(2) for i in range(60)]  # 00-59
+                size_hint: None, None
+                size: "60dp", "44dp"
+
+    # Plage Horaire 2
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint: (0.8, None)
+        height: "80dp"
+        pos_hint: {'center_x': .5, 'center_y': .39}
+        canvas.before:
+            Color:
+                rgba: (1, 1, 1, 0.2)
+            RoundedRectangle:
+                size: self.size
+                pos: self.pos
+                radius: [10]
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: "40dp"
+
+            Label:
+                text: "Heure de début : "
+                font_size: "20dp"
+                color: "#FFFFFF"
+
+            Spinner:
+                id: start_hour2
+                text: '00'
+                values: [str(i).zfill(2) for i in range(24)]  # 00-23
+                size_hint: None, None
+                size: "60dp", "44dp"
+
+            Spinner:
+                id: start_minute2
+                text: '00'
+                values: [str(i).zfill(2) for i in range(60)]  # 00-59
+                size_hint: None, None
+                size: "60dp", "44dp"
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: "40dp"
+
+            Label:
+                text: "Heure de fin : "
+                font_size: "20dp"
+                color: "#FFFFFF"
+
+            Spinner:
+                id: end_hour2
+                text: '00'
+                values: [str(i).zfill(2) for i in range(24)]  # 00-23
+                size_hint: None, None
+                size: "60dp", "44dp"
+
+            Spinner:
+                id: end_minute2
+                text: '00'
+                values: [str(i).zfill(2) for i in range(60)]  # 00-59
+                size_hint: None, None
+                size: "60dp", "44dp"
 
     Label:
         id: good_message
@@ -141,16 +240,21 @@
         color: "#00FF00"  # Vert
         pos_hint: {'center_y': .28}
 
-
-
-
+    Label:
+        id: bad_message
+        text: ""
+        font_size: "20dp"
+        halign: "center"
+        color: "#FF0000"  # Rouge
+        pos_hint: {'center_y': .24}
 
     Button:
-        text: 'Save'
+        text: 'Enregistrer'
         font_size: "20dp"
         size_hint_x: 0.4
         size_hint_y: None
         height: "50dp"
-        pos_hint: {'center_x': .5, 'center_y': .2}
+        pos_hint: {'center_x': .5, 'center_y': .16}
         background_color: "#1E90FF"  # Bleu clair
         color: "#FFFFFF"  # Blanc
+        on_release: root.save_time_schedule()
