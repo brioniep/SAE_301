@@ -1,14 +1,9 @@
-from datetime import time
+from datetime import datetime, time
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
 from kivy.clock import Clock
-import time
-from kivy.uix.screenmanager import Screen, SlideTransition
-from datetime import datetime, time
-
-
 
 class LoginScreen(Screen):
     def on_login(self):
@@ -18,13 +13,12 @@ class LoginScreen(Screen):
         if username == "" and password == "":            
             self.resetForm()
             self.resetLabel()
-            self.manager.transition = SlideTransition(direction="left")  # Glisse vers la gauche
-            self.manager.current = 'success'  # Changer d'écran
-
+            self.manager.transition = SlideTransition(direction="left")
+            self.manager.current = 'success'
         else:            
             self.resetForm()
             self.ids.message_label.text = "Nom d'utilisateur ou mdp incorrect"
-            Clock.schedule_once(self.clear_message, 2.5)  # Effacer le message après 2 secondes
+            Clock.schedule_once(self.clear_message, 2.5)
 
     def resetForm(self):
         self.ids.username_input.text = ""
@@ -36,20 +30,37 @@ class LoginScreen(Screen):
     def clear_message(self, dt):
         self.ids.message_label.text = ""
 
-
-
-
-
-
 class SuccessScreen(Screen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.is_on = False
+
+    def on_back(self):
+        self.manager.transition = SlideTransition(direction="right")
+        self.manager.current = 'login'
+
+    def toggle_on(self):
+        self.ids.button_on.background_color = [0, 1, 0, 1]
+        self.ids.button_off.background_color = [1, 0.5, 0.5, 1]
+        self.is_on = True
+        self.ids.good_message.text = "Leds activées !"
+        Clock.schedule_once(self.clear_message, 1)
+        print("L'état est maintenant ON")
+
+    def toggle_off(self):
+        self.ids.button_off.background_color = [1, 0, 0, 1]
+        self.ids.button_on.background_color = [0.5, 1, 0.5, 1]
+        self.is_on = False
+        self.ids.bad_message.text = "Leds désactivées !"
+        Clock.schedule_once(self.clear_message, 1)
+        print("L'état est maintenant OFF")
+
     def save_time_schedule(self):
-        # Plage Horaire 1
         start_hour1 = int(self.ids.start_hour.text)
         start_minute1 = int(self.ids.start_minute.text)
         end_hour1 = int(self.ids.end_hour.text)
         end_minute1 = int(self.ids.end_minute.text)
 
-        # Plage Horaire 2
         start_hour2 = int(self.ids.start_hour2.text)
         start_minute2 = int(self.ids.start_minute2.text)
         end_hour2 = int(self.ids.end_hour2.text)
@@ -57,50 +68,45 @@ class SuccessScreen(Screen):
 
         current_date = datetime.now().date()
 
-        # Création des objets datetime pour les deux plages horaires
         start_time1 = datetime.combine(current_date, time(start_hour1, start_minute1))
         end_time1 = datetime.combine(current_date, time(end_hour1, end_minute1))
-
         start_time2 = datetime.combine(current_date, time(start_hour2, start_minute2))
         end_time2 = datetime.combine(current_date, time(end_hour2, end_minute2))
 
-        # Conversion en timestamp
         start_timestamp1 = int(start_time1.timestamp())
         end_timestamp1 = int(end_time1.timestamp())
-
         start_timestamp2 = int(start_time2.timestamp())
         end_timestamp2 = int(end_time2.timestamp())
 
-        # Vérification de la validité des deux plages horaires
-        if start_timestamp1 >= end_timestamp1:
-            self.ids.bad_message.text = "Plage 1 : Erreur dans la configuration"
-            Clock.schedule_once(self.clear_message, 3)
+        is_schedule1_configured = not (start_hour1 == 0 and start_minute1 == 0 and end_hour1 == 0 and end_minute1 == 0)
+        is_schedule2_configured = not (start_hour2 == 0 and start_minute2 == 0 and end_hour2 == 0 and end_minute2 == 0)
 
-        elif start_timestamp2 >= end_timestamp2:
-            self.ids.bad_message.text = "Plage 2 : Erreur dans la configuration"
-            Clock.schedule_once(self.clear_message, 3)
+        if is_schedule1_configured:
+            if start_timestamp1 >= end_timestamp1:
+                self.ids.bad_message.text = "Plage 1 : échec lors de l'enregistrement"
+                Clock.schedule_once(self.clear_message, 3)
+                return
 
-        else:
-            self.ids.good_message.text = "Plages horraires enregistrées ! "
+        if is_schedule2_configured:
+            if start_timestamp2 >= end_timestamp2:
+                self.ids.bad_message.text = "Plage 2 : échec lors de l'enregistrement"
+                Clock.schedule_once(self.clear_message, 3)
+                return
+
+        if not (is_schedule1_configured or is_schedule2_configured):
+            self.ids.bad_message.text = "Aucune plage horaire configurée"
             Clock.schedule_once(self.clear_message, 3)
+            return
+
+        self.ids.good_message.text = "Enregistrement réussi !"
+        Clock.schedule_once(self.clear_message, 3)
 
         print(f"Plage horaire 1 : début {start_timestamp1}, fin {end_timestamp1}")
         print(f"Plage horaire 2 : début {start_timestamp2}, fin {end_timestamp2}")
-    
-    def clear_message(self, dt):
-        self.ids.good_message.text = ""
-        self.ids.bad_message.text = ""
-
-
-
-
-
 
     def clear_message(self, dt):
         self.ids.good_message.text = ""
         self.ids.bad_message.text = ""
-
-
 
 class MyApp(App):
     def build(self):
@@ -108,7 +114,6 @@ class MyApp(App):
         sm.add_widget(LoginScreen(name='login'))
         sm.add_widget(SuccessScreen(name='success'))
         return sm
-
 
 if __name__ == '__main__':
     Window.size = (360, 640)
