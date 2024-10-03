@@ -68,29 +68,87 @@ class SuccessScreen(Screen):
     def stop_updating_temperature(self):
         # Arrêter la mise à jour de la température
         Clock.unschedule(self.update_temperature)
-        
-        
-        
 
-    def toggle_on(self):
+
+
+
+
+
+
+    def update_led_3(self):
+        # Vérifier l'état des deux premières LEDs
+        if (self.ids.button_on_1.background_color == [0, 1, 0, 1] and
+            self.ids.button_on_2.background_color == [0, 1, 0, 1]):
+            # Si les deux sont allumées, mettre la LED 3 sur ON
+            self.ids.button_on_3.background_color = [0, 1, 0, 1]
+            self.ids.button_off_3.background_color = [0.5, 0.5, 0.5, 1]
+        else:
+            # Sinon, mettre la LED 3 sur OFF
+            self.ids.button_off_3.background_color = [1, 0, 0, 1]
+            self.ids.button_on_3.background_color = [0.5, 0.5, 0.5, 1]
+
+    def toggle_on_1(self):
         self.ids.button_on_1.background_color = [0, 1, 0, 1]
-        self.ids.button_off_1.background_color = [1, 0.5, 0.5, 1]
-        self.is_on = True
-        self.ids.good_message.text = "Led 1 activées !"
+        self.ids.button_off_1.background_color = [0.5, 0.5, 0.5, 1]
+        self.ids.good_message.text = "Led 1 activée !"
         Clock.schedule_once(self.clear_message, 1)
+        # Mettre à jour l'état de la troisième LED
+        self.update_led_3()
 
-    def toggle_off(self):
+    def toggle_off_1(self):
         self.ids.button_off_1.background_color = [1, 0, 0, 1]
-        self.ids.button_on_1.background_color = [0.5, 1, 0.5, 1]
-        self.is_on = False
-        self.ids.bad_message.text = "Led 1 désactivées !"
+        self.ids.button_on_1.background_color = [0.5, 0.5, 0.5, 1]
+        self.ids.bad_message.text = "Led 1 désactivée !"
+        Clock.schedule_once(self.clear_message, 1)
+        # Mettre à jour l'état de la troisième LED
+        self.update_led_3()
+
+    def toggle_on_2(self):
+        self.ids.button_on_2.background_color = [0, 1, 0, 1]
+        self.ids.button_off_2.background_color = [0.5, 0.5, 0.5, 1]
+        self.ids.good_message.text = "Led 2 activée !"
+        Clock.schedule_once(self.clear_message, 1)
+        # Mettre à jour l'état de la troisième LED
+        self.update_led_3()
+
+    def toggle_off_2(self):
+        self.ids.button_off_2.background_color = [1, 0, 0, 1]
+        self.ids.button_on_2.background_color = [0.5, 0.5, 0.5, 1]
+        self.ids.bad_message.text = "Led 2 désactivée !"
+        Clock.schedule_once(self.clear_message, 1)
+        # Mettre à jour l'état de la troisième LED
+        self.update_led_3()
+
+    def toggle_on_3(self):
+        # Allumer les deux premières LEDs
+        self.ids.button_on_1.background_color = [0, 1, 0, 1]
+        self.ids.button_off_1.background_color = [0.5, 0.5, 0.5, 1]
+        self.ids.button_on_2.background_color = [0, 1, 0, 1]
+        self.ids.button_off_2.background_color = [0.5, 0.5, 0.5, 1]
+
+        # Mettre à jour la LED 3
+        self.ids.button_on_3.background_color = [0, 1, 0, 1]
+        self.ids.button_off_3.background_color = [0.5, 0.5, 0.5, 1]
+        self.ids.good_message.text = "Toutes les LEDs activées !"
+        Clock.schedule_once(self.clear_message, 1)
+
+    def toggle_off_3(self):
+        # Éteindre les deux premières LEDs
+        self.ids.button_off_1.background_color = [1, 0, 0, 1]
+        self.ids.button_on_1.background_color = [0.5, 0.5, 0.5, 1]
+        self.ids.button_off_2.background_color = [1, 0, 0, 1]
+        self.ids.button_on_2.background_color = [0.5, 0.5, 0.5, 1]
+
+        # Mettre à jour la LED 3
+        self.ids.button_off_3.background_color = [1, 0, 0, 1]
+        self.ids.button_on_3.background_color = [0.5, 0.5, 0.5, 1]
+        self.ids.bad_message.text = "Toutes les LEDs désactivées !"
         Clock.schedule_once(self.clear_message, 1)
 
 
 
 
 
-    from datetime import datetime, time as dt_time
 
     def save_time_schedule(self):
         # Définir current_date avant de l'utiliser

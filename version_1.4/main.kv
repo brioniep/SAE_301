@@ -175,12 +175,11 @@
 
 
 
-
     BoxLayout:
         orientation: 'horizontal'
         size_hint: (0.8, None)
         height: "40dp"
-        pos_hint: {'center_x': .55, 'center_y': .84}  # Adjusted position
+        pos_hint: {'center_x': .55, 'center_y': .84}  # Position ajustée
 
         Label:
             text: "Led 1"
@@ -194,24 +193,23 @@
             id: button_on_1
             text: "ON"
             size_hint_x: 0.35
-            background_color: [0.5, 1, 0.5, 1]
+            background_color: [0.5, 0.5, 0.5, 1]  # Gris par défaut
             color: "#FFFFFF"
-            on_release: root.toggle_on()
+            on_release: root.toggle_on_1()
 
         Button:
             id: button_off_1
             text: "OFF"
             size_hint_x: 0.35
-            background_color: [1, 0.5, 0.5, 1]  # Rouge légèrement grisâtre (désactivé)
+            background_color: [0.5, 0.5, 0.5, 1]  # Gris par défaut
             color: "#FFFFFF"
-            on_release: root.toggle_off()
-
+            on_release: root.toggle_off_1()
 
     BoxLayout:
         orientation: 'horizontal'
         size_hint: (0.8, None)
         height: "40dp"
-        pos_hint: {'center_x': .55, 'center_y': .77}  # Adjusted position
+        pos_hint: {'center_x': .55, 'center_y': .77}  # Position ajustée
 
         Label:
             text: "Led 2"
@@ -225,24 +223,23 @@
             id: button_on_2
             text: "ON"
             size_hint_x: 0.35
-            background_color: [0.5, 1, 0.5, 1]
+            background_color: [0.5, 0.5, 0.5, 1]  # Gris par défaut
             color: "#FFFFFF"
-            on_release: root.toggle_on()
+            on_release: root.toggle_on_2()
 
         Button:
             id: button_off_2
             text: "OFF"
             size_hint_x: 0.35
-            background_color: [1, 0.5, 0.5, 1]
+            background_color: [0.5, 0.5, 0.5, 1]  # Gris par défaut
             color: "#FFFFFF"
-            on_release: root.toggle_off()
-
+            on_release: root.toggle_off_2()
 
     BoxLayout:
         orientation: 'horizontal'
         size_hint: (0.8, None)
         height: "40dp"
-        pos_hint: {'center_x': .55, 'center_y': .70}  # Adjusted position
+        pos_hint: {'center_x': .55, 'center_y': .70}  # Position ajustée
 
         Label:
             text: "Les deux"
@@ -256,20 +253,17 @@
             id: button_on_3
             text: "ON"
             size_hint_x: 0.35
-            background_color: [0.5, 1, 0.5, 1]
+            background_color: [0.5, 0.5, 0.5, 1]  # Gris par défaut
             color: "#FFFFFF"
-            on_release: root.toggle_on()
+            on_release: root.toggle_on_3()
 
         Button:
             id: button_off_3
             text: "OFF"
             size_hint_x: 0.35
-            background_color: [1, 0.5, 0.5, 1]
+            background_color: [0.5, 0.5, 0.5, 1]  # Gris par défaut
             color: "#FFFFFF"
-            on_release: root.toggle_off()
-
-
-
+            on_release: root.toggle_off_3()
 
 
 
