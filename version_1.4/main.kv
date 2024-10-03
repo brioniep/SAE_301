@@ -53,6 +53,39 @@
         color: "#FF4500"
         pos_hint: {'center_x': .5, 'center_y': .15}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <SuccessScreen>:
     Image:
         source: "fond1.png"
@@ -64,10 +97,10 @@
     Label:
         text: '[u]ESP32 control[/u]'
         markup: True
-        font_size: "45dp"
+        font_size: "35dp"
         halign: "center"
         color: "#FFFFFF"
-        pos_hint: {'center_y': .9}
+        pos_hint: {'center_y': .93}
 
     Button:
         text: "Déconnexion"
@@ -77,11 +110,26 @@
         color: "#FFFFFF"
         on_release: root.on_back()
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     BoxLayout:
         orientation: 'horizontal'
-        size_hint: (0.7, None)
+        size_hint: (0.8, None)
         height: "40dp"
-        pos_hint: {'center_x': .5, 'center_y': .65}  # Adjusted position
+        pos_hint: {'center_x': .5, 'center_y': .60}  # Adjusted position
         canvas.before:
             Color:
                 rgba: (1, 1, 1, 0.2)
@@ -95,52 +143,154 @@
             text: "Température : "
             font_size: "20dp"
             color: "#FFFFFF"  # Blanc
-            size_hint_x: None
-            width: self.texture_size[0] + 10
+            size_hint_x: 0.5  # Le label prendra 50% de la largeur
+            halign: 'center'
+            valign: 'middle'
+            text_size: self.size  # S'assure que le texte est centré dans le label
 
         Label:
             id: temperature_2
             text: ""
             font_size: "20dp"
             color: "#FFFFFF"  # Blanc
-            size_hint_x: None
-            width: self.texture_size[0] + 10
+            size_hint_x: 0.5  # Le label prendra 50% de la largeur
+            halign: 'center'
+            valign: 'middle'
+            text_size: self.size  # S'assure que le texte est centré dans le label
 
-        Label:
-            id: temperature_3
-            text: "°C"
-            font_size: "20dp"
-            color: "#FFFFFF"  # Blanc
-            size_hint_x: None
-            width: self.texture_size[0] + 10
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     BoxLayout:
         orientation: 'horizontal'
-        size_hint: (0.5, None)
+        size_hint: (0.8, None)
         height: "40dp"
-        pos_hint: {'center_x': .5, 'center_y': .75}  # Adjusted position
+        pos_hint: {'center_x': .55, 'center_y': .84}  # Adjusted position
+
+        Label:
+            text: "Led 1"
+            font_size: "18dp"
+            size_hint_x: 0.3  # Ajuste selon le besoin pour la taille du label
+            halign: 'left'
+            valign: 'middle'
+            text_size: self.size
 
         Button:
-            id: button_on
+            id: button_on_1
             text: "ON"
-            size_hint_x: 0.5
+            size_hint_x: 0.35
             background_color: [0.5, 1, 0.5, 1]
             color: "#FFFFFF"
             on_release: root.toggle_on()
 
         Button:
-            id: button_off
+            id: button_off_1
             text: "OFF"
-            size_hint_x: 0.5
+            size_hint_x: 0.35
             background_color: [1, 0.5, 0.5, 1]  # Rouge légèrement grisâtre (désactivé)
             color: "#FFFFFF"
             on_release: root.toggle_off()
+
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: (0.8, None)
+        height: "40dp"
+        pos_hint: {'center_x': .55, 'center_y': .77}  # Adjusted position
+
+        Label:
+            text: "Led 2"
+            font_size: "18dp"
+            size_hint_x: 0.3
+            halign: 'left'
+            valign: 'middle'
+            text_size: self.size
+
+        Button:
+            id: button_on_2
+            text: "ON"
+            size_hint_x: 0.35
+            background_color: [0.5, 1, 0.5, 1]
+            color: "#FFFFFF"
+            on_release: root.toggle_on()
+
+        Button:
+            id: button_off_2
+            text: "OFF"
+            size_hint_x: 0.35
+            background_color: [1, 0.5, 0.5, 1]
+            color: "#FFFFFF"
+            on_release: root.toggle_off()
+
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: (0.8, None)
+        height: "40dp"
+        pos_hint: {'center_x': .55, 'center_y': .70}  # Adjusted position
+
+        Label:
+            text: "Les deux"
+            font_size: "18dp"
+            size_hint_x: 0.3
+            halign: 'left'
+            valign: 'middle'
+            text_size: self.size
+
+        Button:
+            id: button_on_3
+            text: "ON"
+            size_hint_x: 0.35
+            background_color: [0.5, 1, 0.5, 1]
+            color: "#FFFFFF"
+            on_release: root.toggle_on()
+
+        Button:
+            id: button_off_3
+            text: "OFF"
+            size_hint_x: 0.35
+            background_color: [1, 0.5, 0.5, 1]
+            color: "#FFFFFF"
+            on_release: root.toggle_off()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     BoxLayout:
         orientation: 'vertical'
         size_hint: (0.8, None)
         height: "80dp"
-        pos_hint: {'center_x': .5, 'center_y': .53}  # Adjusted position
+        pos_hint: {'center_x': .5, 'center_y': .48}  # Adjusted position
         canvas.before:
             Color:
                 rgba: (1, 1, 1, 0.2)
@@ -201,7 +351,7 @@
         orientation: 'vertical'
         size_hint: (0.8, None)
         height: "80dp"
-        pos_hint: {'center_x': .5, 'center_y': .39}  # Adjusted position
+        pos_hint: {'center_x': .5, 'center_y': .33}  # Adjusted position
         canvas.before:
             Color:
                 rgba: (1, 1, 1, 0.2)
@@ -209,6 +359,7 @@
                 size: self.size
                 pos: self.pos
                 radius: [10]
+                
 
         BoxLayout:
             orientation: 'horizontal'
@@ -264,7 +415,7 @@
         font_size: "20dp"
         halign: "center"
         color: "#00FF00"
-        pos_hint: {'center_y': .28}
+        pos_hint: {'center_y': .24}
 
     Label:
         id: bad_message
@@ -272,7 +423,7 @@
         font_size: "20dp"
         halign: "center"
         color: "#FF0000"
-        pos_hint: {'center_y': .24}
+        pos_hint: {'center_y': .20}
 
     Button:
         text: 'Enregistrer'
@@ -280,7 +431,7 @@
         size_hint_x: 0.4
         size_hint_y: None
         height: "50dp"
-        pos_hint: {'center_x': .5, 'center_y': .16}
+        pos_hint: {'center_x': .5, 'center_y': .13}
         background_color: "#1E90FF"
         color: "#FFFFFF"
         on_release: root.save_time_schedule()
