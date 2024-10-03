@@ -13,15 +13,23 @@ class LoginScreen(Screen):
         username = self.ids.username_input.text
         password = self.ids.password_input.text
 
-        if username == "" and password == "":            
+        if username == "" and password == "":
             self.resetForm()
             self.resetLabel()
             self.manager.transition = SlideTransition(direction="left")
             self.manager.current = 'success'
-        else:            
+
+            # Appel de la méthode start_updating_temperature
+            success_screen = self.manager.get_screen('success')
+            success_screen.start_updating_temperature()  # Démarrer la mise à jour continue
+        else:
             self.resetForm()
             self.ids.message_label.text = "Nom d'utilisateur ou mdp incorrect"
             Clock.schedule_once(self.clear_message, 2.5)
+
+
+
+
 
     def resetForm(self):
         self.ids.username_input.text = ""
@@ -45,17 +53,20 @@ class SuccessScreen(Screen):
         self.manager.current = 'login'
 
    
-    def update_temperature(self):
+    def update_temperature(self, dt=None):
         client = MQTT()
         client.connection()
         temperature = client.get_messages()
         self.ids.temperature_2.text = temperature
         print("message reçu : ", temperature)
 
-        Clock.schedule_interval(self.clear_temperature, 1)
-    def clear_temperature(self,dt):
-        Clock.schedule_interval(self.update_temperature, 1)
+    def start_updating_temperature(self):
+        # Mettre à jour la température toutes les 5 secondes
+        Clock.schedule_interval(self.update_temperature, 5)
 
+    def stop_updating_temperature(self):
+        # Arrêter la mise à jour de la température
+        Clock.unschedule(self.update_temperature)
         
         
         

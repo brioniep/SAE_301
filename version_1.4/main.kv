@@ -46,7 +46,6 @@
         background_color: "#1E90FF"
         color: "#FFFFFF"
         on_release: root.on_login()
-
     Label:
         id: message_label
         text: ""
@@ -127,7 +126,7 @@
             size_hint_x: 0.5
             background_color: [0.5, 1, 0.5, 1]
             color: "#FFFFFF"
-            on_release: root.update_temperature()
+            on_release: root.toggle_on()
 
         Button:
             id: button_off
