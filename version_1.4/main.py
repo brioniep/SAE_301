@@ -45,7 +45,6 @@ class SuccessScreen(Screen):
         self.is_on = True
         self.ids.good_message.text = "Leds activées !"
         Clock.schedule_once(self.clear_message, 1)
-        print("L'état est maintenant ON")
 
     def toggle_off(self):
         self.ids.button_off.background_color = [1, 0, 0, 1]
@@ -53,7 +52,6 @@ class SuccessScreen(Screen):
         self.is_on = False
         self.ids.bad_message.text = "Leds désactivées !"
         Clock.schedule_once(self.clear_message, 1)
-        print("L'état est maintenant OFF")
 
     def save_time_schedule(self):
         start_hour1 = int(self.ids.start_hour.text)
@@ -100,9 +98,6 @@ class SuccessScreen(Screen):
 
         self.ids.good_message.text = "Enregistrement réussi !"
         Clock.schedule_once(self.clear_message, 3)
-
-        print(f"Plage horaire 1 : début {start_timestamp1}, fin {end_timestamp1}")
-        print(f"Plage horaire 2 : début {start_timestamp2}, fin {end_timestamp2}")
 
     def clear_message(self, dt):
         self.ids.good_message.text = ""
