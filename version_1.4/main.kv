@@ -78,14 +78,11 @@
         color: "#FFFFFF"
         on_release: root.on_back()
 
-
-
-
     BoxLayout:
         orientation: 'horizontal'
-        size_hint: (0.8, None)
+        size_hint: (0.7, None)
         height: "40dp"
-        pos_hint: {'center_x': .5, 'center_y': .64}
+        pos_hint: {'center_x': .5, 'center_y': .65}  # Adjusted position
         canvas.before:
             Color:
                 rgba: (1, 1, 1, 0.2)
@@ -118,14 +115,11 @@
             size_hint_x: None
             width: self.texture_size[0] + 10
 
-
-
-
     BoxLayout:
         orientation: 'horizontal'
         size_hint: (0.5, None)
         height: "40dp"
-        pos_hint: {'center_x': .5, 'center_y': .75}
+        pos_hint: {'center_x': .5, 'center_y': .75}  # Adjusted position
 
         Button:
             id: button_on
@@ -147,7 +141,7 @@
         orientation: 'vertical'
         size_hint: (0.8, None)
         height: "80dp"
-        pos_hint: {'center_x': .5, 'center_y': .59}
+        pos_hint: {'center_x': .5, 'center_y': .53}  # Adjusted position
         canvas.before:
             Color:
                 rgba: (1, 1, 1, 0.2)
@@ -208,7 +202,7 @@
         orientation: 'vertical'
         size_hint: (0.8, None)
         height: "80dp"
-        pos_hint: {'center_x': .5, 'center_y': .39}
+        pos_hint: {'center_x': .5, 'center_y': .39}  # Adjusted position
         canvas.before:
             Color:
                 rgba: (1, 1, 1, 0.2)
