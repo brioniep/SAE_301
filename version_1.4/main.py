@@ -4,6 +4,9 @@ from kivy.lang import Builder
 from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
 from kivy.clock import Clock
+#mqtt
+from MQTT import *
+
 
 class LoginScreen(Screen):
     def on_login(self):
@@ -30,6 +33,8 @@ class LoginScreen(Screen):
     def clear_message(self, dt):
         self.ids.message_label.text = ""
 
+        
+
 class SuccessScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -38,6 +43,22 @@ class SuccessScreen(Screen):
     def on_back(self):
         self.manager.transition = SlideTransition(direction="right")
         self.manager.current = 'login'
+
+   
+    def update_temperature(self):
+        client = MQTT()
+        client.connection()
+        temperature = client.get_messages()
+        self.ids.temperature_2.text = temperature
+        print("message reçu : ", temperature)
+
+        Clock.schedule_interval(self.clear_temperature, 1)
+    def clear_temperature(self,dt):
+        Clock.schedule_interval(self.update_temperature, 1)
+
+        
+        
+        
 
     def toggle_on(self):
         self.ids.button_on.background_color = [0, 1, 0, 1]

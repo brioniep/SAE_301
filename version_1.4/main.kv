@@ -101,7 +101,7 @@
 
         Label:
             id: temperature_2
-            text: "40"
+            text: ""
             font_size: "20dp"
             color: "#FFFFFF"  # Blanc
             size_hint_x: None
@@ -127,7 +127,7 @@
             size_hint_x: 0.5
             background_color: [0.5, 1, 0.5, 1]
             color: "#FFFFFF"
-            on_release: root.toggle_on()
+            on_release: root.update_temperature()
 
         Button:
             id: button_off
