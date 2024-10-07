@@ -43,6 +43,10 @@ class LoginScreen(Screen):
         self.ids.message_label.text = ""
 
         
+import threading
+
+import threading
+from kivy.clock import Clock
 
 class SuccessScreen(Screen):
     def __init__(self, **kwargs):
@@ -53,21 +57,37 @@ class SuccessScreen(Screen):
         self.manager.transition = SlideTransition(direction="right")
         self.manager.current = 'login'
 
-   
-    def update_temperature(self, dt=None):
+    # Fonction pour lancer le thread séparé
+    def start_updating_temperature(self):
+        # Créer un thread pour écouter les messages MQTT sans bloquer l'interface
+        threading.Thread(target=self.listen_for_temperature, daemon=True).start()
+
+    # Fonction qui tourne en continu dans un thread séparé
+    def listen_for_temperature(self):
         client = MQTT()
         client.connection()
-        temperature = client.get_messages()
-        self.ids.temperature_2.text = f"{temperature}  C° "
-        print("message reçu : ", temperature)
 
-    def start_updating_temperature(self):
-        # Mettre à jour la température toutes les 5 secondes
-        Clock.schedule_interval(self.update_temperature, 5)
+        while True:
+            try:
+                # Récupérer la température
+                temperature = client.get_messages()
 
-    def stop_updating_temperature(self):
-        # Arrêter la mise à jour de la température
-        Clock.unschedule(self.update_temperature)
+                # Mettre à jour l'UI de manière sûre en utilisant Clock.schedule_once
+                Clock.schedule_once(lambda dt: self.update_temperature_ui(temperature))
+                time.sleep(1)
+                # Afficher la température dans le terminal pour le débogage
+                print("Température reçue : ", temperature)
+
+            except Exception as e:
+                # Afficher un message d'erreur en cas de problème de connexion
+                print(f"Erreur de connexion MQTT : {str(e)}")
+                Clock.schedule_once(lambda dt: self.update_temperature_ui("Erreur de connexion"))
+
+    # Fonction pour mettre à jour l'UI
+    def update_temperature_ui(self, temperature):
+        # Mettre à jour le texte du label de température
+        self.ids.temperature_2.text = f"{temperature}  C°"
+
 
 
 
@@ -76,9 +96,15 @@ class SuccessScreen(Screen):
 
 
     def update_led_3(self):
+
+        client = MQTT(topic = "on_off")
+        client.connection()
+
+        etat_led_1_get = client.get_messages()
+        etat_led_2_get = client.get_messages()        
+
         # Vérifier l'état des deux premières LEDs
-        if (self.ids.button_on_1.background_color == [0, 1, 0, 1] and
-            self.ids.button_on_2.background_color == [0, 1, 0, 1]):
+        if (etat_led_1_get == "on" and etat_led_2_get == "on"):
             # Si les deux sont allumées, mettre la LED 3 sur ON
             self.ids.button_on_3.background_color = [0, 1, 0, 1]
             self.ids.button_off_3.background_color = [0.5, 0.5, 0.5, 1]
@@ -88,38 +114,52 @@ class SuccessScreen(Screen):
             self.ids.button_on_3.background_color = [0.5, 0.5, 0.5, 1]
 
     def toggle_on_1(self):
+        client = MQTT(topic = "on_off_1")
+        client.connection()
         self.ids.button_on_1.background_color = [0, 1, 0, 1]
         self.ids.button_off_1.background_color = [0.5, 0.5, 0.5, 1]
         self.ids.good_message.text = "Led 1 activée !"
-        Clock.schedule_once(self.clear_message, 1)
+        Clock.schedule_once(self.clear_message, 1)        
+        client.envoi("on")
+
         # Mettre à jour l'état de la troisième LED
         self.update_led_3()
 
     def toggle_off_1(self):
+        client = MQTT(topic = "on_off_1")
+        client.connection()
         self.ids.button_off_1.background_color = [1, 0, 0, 1]
         self.ids.button_on_1.background_color = [0.5, 0.5, 0.5, 1]
         self.ids.bad_message.text = "Led 1 désactivée !"
         Clock.schedule_once(self.clear_message, 1)
+        client.envoi("off")
         # Mettre à jour l'état de la troisième LED
         self.update_led_3()
 
     def toggle_on_2(self):
+        client = MQTT(topic = "on_off_2")
+        client.connection()
         self.ids.button_on_2.background_color = [0, 1, 0, 1]
         self.ids.button_off_2.background_color = [0.5, 0.5, 0.5, 1]
         self.ids.good_message.text = "Led 2 activée !"
         Clock.schedule_once(self.clear_message, 1)
+        client.envoi("on")
         # Mettre à jour l'état de la troisième LED
         self.update_led_3()
 
     def toggle_off_2(self):
+        client = MQTT(topic = "on_off_2")
+        client.connection()
         self.ids.button_off_2.background_color = [1, 0, 0, 1]
         self.ids.button_on_2.background_color = [0.5, 0.5, 0.5, 1]
         self.ids.bad_message.text = "Led 2 désactivée !"
         Clock.schedule_once(self.clear_message, 1)
+        client.envoi("off")
         # Mettre à jour l'état de la troisième LED
         self.update_led_3()
 
     def toggle_on_3(self):
+        client = MQTT(topic = "on_off_3")
         # Allumer les deux premières LEDs
         self.ids.button_on_1.background_color = [0, 1, 0, 1]
         self.ids.button_off_1.background_color = [0.5, 0.5, 0.5, 1]
@@ -151,6 +191,11 @@ class SuccessScreen(Screen):
 
 
     def save_time_schedule(self):
+
+        client = MQTT(client = "horaires")
+
+
+
         # Définir current_date avant de l'utiliser
         current_date = datetime.now().date()
 
