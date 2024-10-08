@@ -1,0 +1,538 @@
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Global Styles */
+html, body {
+    width: 100%;
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2em;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+nav ul li a:hover {
+    background-color: #555;
+    color: #ffffff;
+}
+/* Style pour la side bar */
+
+.bar {
+    background-color: #f4f4f4;
+    padding: 10px;
+    width: 200px;
+    height: 100vh;
+    position: fixed;
+    overflow: auto;
+}
+
+.bar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.bar ul li {
+    padding: 8px 10px;
+    border-bottom: 1px solid #ccc;
+    font-size: 0.9em;
+}
+
+.bar ul li a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+    padding: 8px 10px;
+}
+
+main {
+    margin-left: 210px;
+    padding: 10px;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 30px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+main p, main h1, main h2, main h3, a {
+    font-size: 1em;
+    margin-left: 20px;
+}
+
+.header-banner {
+    background-image: url("https://img.freepik.com/premium-photo/3d-render-atmospheric-cyberpunk-server-room_739292-462.jpg");
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    font-size: 1.2em;
+    gap: 20px;
+}
+
+.header-banner a, .style-link {
+    z-index: 1;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    background-color: #007bff;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.header-banner h1, .header-banner h2 {
+    z-index: 1;
+    position: relative;
+    text-align: center;
+    padding: 20px;
+}
+
+.header-banner::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+#titre-dashboard {
+    margin-top: 2%;
+}
+
+.content-home {
+    margin-top: 2%;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.content-home h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.content-home p {
+    font-size: 1.2em;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+.content-home ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.content-home ul li {
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+.active {
+    color: #007bff;
+    text-decoration: none;
+    transition: text-decoration 0.3s, color 0.3s; /* Smooth transition */
+}
+
+.active:hover, .active:focus {
+    text-decoration: underline;
+}
+
+
+
+
+/* Style pour les formulaires */
+form {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+textarea:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+button {
+    margin-top: 2%;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+button a {
+    color: #fff;
+    text-decoration: none;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+
+/* CRUD Utilisateurs */
+.table-user {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-user th {
+    background-color: rgb(82, 79, 79);
+    color: #fff;
+    padding: 10px;
+    text-align: left;
+}
+
+.table-user td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* CRUD Applications */
+.image-upload {
+    height: 100px;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px dashed #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.image-upload:hover {
+    border-color: #007bff;
+}
+
+.image-upload input {
+    display: none;
+}
+
+/*Dashboard*/
+
+/* Styles pour les serveurs */
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.service-box {
+    margin: 2%; /* Eh oui Maxence le css cest pas compliqué */
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.service-box:hover {
+    transform: translateY(5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.service-box p {
+    font-size: 1.2em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.service-box ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.service-box ul li {
+    margin-bottom: 5px;
+}
+
+.service-box ul li strong {
+    margin-right: 10px;
+    color: #333;
+}
+
+.service-box h4 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.service-box ul {
+    margin-left: 20px;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+
+
+
+.logo {
+    display: flex;
+    width: 15%;
+    height: 15%;
+    margin-top: -25px;
+    margin-bottom: -45px;
+}
+
+.texte_accueil p {
+    font-size: 18px;
+    margin-left: -7%;
+    margin-bottom: 7px;
+    width: 100%;
+}
+
+.texte_accueil ul li p {
+    font-size: 17px;
+    margin: 10px;
+}
+
+.texte_accueil ul li {
+    font-size: 17px;
+    margin-left: 3%;
+    list-style-type: none;
+    margin-bottom: 5px;
+}
+
+.texte_accueil ul ul li {
+    font-size: 17px;
+    margin-left: 5%;
+    list-style-type: none;
+}
+
+.texte_accueil h1 {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-decoration: underline;
+    font-size: 25px;
+    margin: 2%;
+    margin-left: -50px;
+}
+
+.conteneur {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.bloc {
+    justify-content: space-between;
+    width: 100%;
+    position: relative;
+}
+
+.bloc p {
+    width: 80%;
+    text-align: center;
+}
+
+.bloc ul {
+    width: 80%;
+    margin-top: 3%;
+    text-align: center;
+}
+
+
+.block {
+    margin: 25px;
+    padding: 30px;
+}
+
+.separation {
+    height: 3px;
+    background-color: #333;
+    margin: 20px 0;
+    width: 85%;
+}
+
+form.inline {
+    display: inline;
+}
+
+form.inline input[type="submit"]  {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: #007bff;
+    text-decoration: underline;
+    display: inline;
+}
+
+form.inline input[type="submit"]:hover {
+    color: #0056b3;
+}
+.style-link {
+    display: inline-block;
+    margin-top: 20px; /* Ajuste cette valeur selon tes besoins */
+    padding: 10px 20px;
+    background-color: #007bff;
+    border-radius: 5px;
+    color: #fff;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.style-link:hover {
+    background-color: #0056b3;
+}
+
+
+.clock {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5em;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
+/* styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container {
+    max-width: 800px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    text-align: center;  /* Center text in the container */
+}
+
+.title {
+    margin: 10px 0;
+}
+
+.temperature {
+    font-size: 1.2em; /* Smaller size than the title */
+    margin-bottom: 20px;
+}
+
+.schedule {
+    text-align: left; /* Align left */
+    margin-bottom: 20px;
+}
+
+.add-schedule {
+    margin-bottom: 20px;
+    text-align: left; /* Align left */
+}
+
+.control-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the buttons */
+}
+
+.control-button {
+    padding: 10px 20px;
+    margin: 10px;
+    font-size: 1.1em; /* Bigger font size for buttons */
+    background-color: #007bff; /* Bootstrap Primary Color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.control-button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+.logout {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
