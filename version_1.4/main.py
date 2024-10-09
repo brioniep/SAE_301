@@ -54,9 +54,7 @@ class LoginScreen(Screen):
 
 
 class SuccessScreen(Screen):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.is_on = False
+
 
     def on_back(self):
         self.manager.transition = SlideTransition(direction="right")
@@ -108,74 +106,31 @@ class SuccessScreen(Screen):
 
 
 
+
+
+
+
+
+
+    # Fonction pour vérifier les états des LEDs 1 et 2 et mettre à jour la LED 3
     def update_led_3(self):
-        # Créer un thread pour écouter les messages MQTT sans bloquer l'interface
-        threading.Thread(target=self.listen_for_led_state, daemon=True).start()
-
-
-    def listen_for_led_state(self):
-        client_1 = MQTT(topic="IUT/led_1")
-        client_2 = MQTT(topic="IUT/led_2")
-
-        client_1.connection()
-        client_2.connection()
-
-        while True:
-            try:
-                # Récupérer les messages des deux LEDs
-                etat_led_1_get = client_1.get_messages()
-                etat_led_2_get = client_2.get_messages()
-
-                print(f"LED 1: {etat_led_1_get}, LED 2: {etat_led_2_get}")  # Debugging
-
-                # Mettre à jour l'UI de manière sûre
-                Clock.schedule_once(lambda dt: self.update_led_ui(etat_led_1_get, etat_led_2_get))
-                
-                # Pause de 1 seconde avant la prochaine vérification
-                time.sleep(1)
-
-            except Exception as e:
-                print(f"Erreur de connexion MQTT : {str(e)}")
-                Clock.schedule_once(lambda dt: self.update_led_ui("Erreur de connexion", "Erreur de connexion"))
-
-
-
-    def update_led_ui(self, etat_led_1_get, etat_led_2_get):
-        # Mise à jour de l'état de la LED 1
-        if etat_led_1_get == "led_1_on":
-            self.ids.button_on_1.background_color = vert
-            self.ids.button_off_1.background_color = gris
-        elif etat_led_1_get == "led_1_off":
-            self.ids.button_off_1.background_color = rouge
-            self.ids.button_on_1.background_color = gris
-
-        # Mise à jour de l'état de la LED 2
-        if etat_led_2_get == "led_2_on":
-            self.ids.button_on_2.background_color = vert
-            self.ids.button_off_2.background_color = gris
-        elif etat_led_2_get == "led_2_off":
-            self.ids.button_off_2.background_color = rouge
-            self.ids.button_on_2.background_color = gris
-
-        # Mise à jour de l'état de la LED 3 en fonction des états de la LED 1 et de la LED 2
-        if etat_led_1_get == "led_1_on" and etat_led_2_get == "led_2_on":
-            # Si les deux LEDs sont ON, allume la LED 3
+        # Vérifie si LED 1 et LED 2 sont toutes les deux activées
+        if self.ids.button_on_1.background_color == vert and self.ids.button_on_2.background_color == vert:
+            # Allume la LED 3
             self.ids.button_on_3.background_color = vert
             self.ids.button_off_3.background_color = gris
-        elif etat_led_1_get == "led_1_off" and etat_led_2_get == "led_2_off":
-            # Si les deux LEDs sont OFF, éteins la LED 3
+            self.ids.good_message.text = "Toutes les LEDs activées !"
+        # Vérifie si LED 1 et LED 2 sont toutes les deux désactivées
+        elif self.ids.button_off_1.background_color == rouge and self.ids.button_off_2.background_color == rouge:
+            # Éteint la LED 3
             self.ids.button_off_3.background_color = rouge
             self.ids.button_on_3.background_color = gris
+            self.ids.bad_message.text = "Toutes les LEDs désactivées !"
         else:
-            # Si une seule des deux LEDs est ON, éteins la LED 3
+            # Si l'une des LEDs est activée et l'autre éteinte, LED 3 en état gris (intermédiaire)
             self.ids.button_on_3.background_color = gris
             self.ids.button_off_3.background_color = gris
-
-
-
-
-
-
+        Clock.schedule_once(self.clear_message, 1)
 
 
     def toggle_on_1(self):
@@ -186,7 +141,7 @@ class SuccessScreen(Screen):
         self.ids.good_message.text = "Led 1 activée !"
         Clock.schedule_once(self.clear_message, 1)
         client.envoi(message="led_1_on")
-        
+
         # Mettre à jour l'état de la LED 3
         self.update_led_3()
 
@@ -231,27 +186,35 @@ class SuccessScreen(Screen):
 
 
     def toggle_on_3(self):
-        # Allumer les deux premières LEDs
-        self.toggle_on_1()  # Assure-toi de bien allumer la LED 1
-        self.toggle_on_2()  # Assure-toi de bien allumer la LED 2
-
-        # Mettre à jour la LED 3
-        self.ids.button_on_3.background_color = vert
-        self.ids.button_off_3.background_color = gris
-        self.ids.good_message.text = "Toutes les LEDs activées !"
-        Clock.schedule_once(self.clear_message, 1)
+        # Si l'utilisateur veut allumer la LED 3 manuellement, on allume les deux premières LEDs
+        self.toggle_on_1()
+        self.toggle_on_2()
 
 
     def toggle_off_3(self):
-        # Éteindre les deux premières LEDs
-        self.toggle_off_1()  # Assure-toi de bien éteindre la LED 1
-        self.toggle_off_2()  # Assure-toi de bien éteindre la LED 2
+        # Si l'utilisateur veut éteindre la LED 3 manuellement, on éteint les deux premières LEDs
+        self.toggle_off_1()
+        self.toggle_off_2()
 
-        # Mettre à jour la LED 3
-        self.ids.button_off_3.background_color = rouge
-        self.ids.button_on_3.background_color = gris
-        self.ids.bad_message.text = "Toutes les LEDs désactivées !"
-        Clock.schedule_once(self.clear_message, 1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
