@@ -49,29 +49,29 @@ def get_temperature(request):
 def turn_on(request, prise_id):
     # Envoyer un message MQTT pour allumer une prise
     if prise_id == 1:
-        mqtt_client_led_1.envoi("led_1_ON")
+        mqtt_client_led_1.envoi("led_1_on")
     elif prise_id == 2:
-        mqtt_client_led_2.envoi("led_2_ON")
+        mqtt_client_led_2.envoi("led_2_on")
     return redirect('sitesae/index')
 
 def turn_off(request, prise_id):
     # Envoyer un message MQTT pour éteindre une prise
     if prise_id == 1:
-        mqtt_client_led_1.envoi("led_1_OFF")
+        mqtt_client_led_1.envoi("led_1_off")
     elif prise_id == 2:
-        mqtt_client_led_2.envoi("led_2_OFF")
+        mqtt_client_led_2.envoi("led_2_off")
     return redirect('sitesae/index')
 
 def turn_on_all(request):
     # Envoyer un message MQTT pour allumer les deux prises
-    mqtt_client_led_1.envoi("led_1_ON")
-    mqtt_client_led_2.envoi("led_2_ON")
+    mqtt_client_led_1.envoi("led_1_on")
+    mqtt_client_led_2.envoi("led_2_on")
     return redirect('sitesae/index')
 
 def turn_off_all(request):
     # Envoyer un message MQTT pour éteindre les deux prises
-    mqtt_client_led_1.envoi("led_1_OFF")
-    mqtt_client_led_2.envoi("led_2_OFF")
+    mqtt_client_led_1.envoi("led_1_off")
+    mqtt_client_led_2.envoi("led_2_off")
     return redirect('sitesae/index')
 
 
@@ -116,7 +116,12 @@ def check_schedule():
             current_state = prise_states.get(schedule.prise_id, 'off')
 
             # Si l'état désiré est différent de l'état actuel, envoyer un message MQTT
-            if current_state != desired_state:
+            if schedule.prise_id == 1:
+                if desired_state == 'on':
+                    mqtt_client_led_1.envoi(f"led_{schedule.prise_id}_on")  # Envoyer le message correct pour allumer
+                else:
+                    mqtt_client_led_1.envoi(f"led_{schedule.prise_id}_off")  # Envoyer le message correct pour éteindre
+            elif schedule.prise_id == 2:
                 if desired_state == 'on':
                     mqtt_client_led_2.envoi(f"led_{schedule.prise_id}_on")  # Envoyer le message correct pour allumer
                 else:
