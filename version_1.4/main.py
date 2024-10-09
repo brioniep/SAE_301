@@ -29,6 +29,7 @@ class LoginScreen(Screen):
             # Appel de la méthode start_updating_temperature
             success_screen = self.manager.get_screen('success')
             success_screen.start_updating_temperature()  # Démarrer la mise à jour continue
+            success_screen.start_update_led()  # Démarrer la mise à jour continue des LEDs
         else:
             self.resetForm()
             self.ids.message_label.text = "Nom d'utilisateur ou mdp incorrect"
@@ -110,29 +111,103 @@ class SuccessScreen(Screen):
 
 
 
+    def __init__(self, **kwargs):
+        super(SuccessScreen, self).__init__(**kwargs)
+        # Ajout des variables d'état pour LED 1 et LED 2
+        self.led_1_state = "off"  # Etat initial de la LED 1
+        self.led_2_state = "off"  # Etat initial de la LED 2
 
 
-    # Fonction pour vérifier les états des LEDs 1 et 2 et mettre à jour la LED 3
+
+    def start_update_led(self):
+        # Créer un thread pour écouter les messages MQTT sans bloquer l'interface
+        threading.Thread(target=self.listen_for_led, daemon=True).start()
+
+    # Fonction qui tourne en continu dans un thread séparé
+    def listen_for_led(self):
+
+        client_1 = MQTT(topic="IUT/led_1")
+        client_1.connection()
+
+        client_2 = MQTT(topic="IUT/led_2")
+        client_2.connection()   
+
+        while True:
+            try:
+      
+                # Mettre à jour l'UI de manière sûre en utilisant Clock.schedule_once
+                
+                msg_1 = client_1.get_messages()
+                msg_2 = client_2.get_messages()
+                led_1_state = "none"
+                led_2_state = "none"
+
+                if msg_1 == "led_1_on":
+                    self.ids.button_on_1.background_color = vert
+                    self.ids.button_off_1.background_color = gris              
+                
+                elif msg_1 == "led_1_off":
+                    self.ids.button_off_1.background_color = rouge
+                    self.ids.button_on_1.background_color = gris
+                if msg_2 == "led_2_on":     
+                    self.ids.button_on_2.background_color = vert
+                    self.ids.button_off_2.background_color = gris
+                elif msg_2 == "led_2_off":
+                    self.ids.button_off_2.background_color = rouge
+                    self.ids.button_on_2.background_color = gris
+
+                if msg_1 == "led_1_on" and msg_2 == "led_2_on":
+                    self.ids.button_on_3.background_color = vert
+                    self.ids.button_off_3.background_color = gris
+                elif msg_1 == "led_1_off" and msg_2 == "led_2_off":
+                    self.ids.button_off_3.background_color = rouge
+                    self.ids.button_on_3.background_color = gris
+                else:
+                    self.ids.button_on_3.background_color = gris
+                    self.ids.button_off_3.background_color = gris
+
+
+        
+                
+                time.sleep(1)
+                # Afficher la température dans le terminal pour le débogage
+                print("led reçue : ", msg_1, msg_2)
+
+            except Exception as e:
+                # Afficher un message d'erreur en cas de problème de connexion
+                print(f"Erreur de connexion MQTT : {str(e)}")
+                Clock.schedule_once(lambda dt: self.update_temperature_ui("Erreur de connexion"))
+
+
+
+
+    # Fonction pour vérifier les états des LEDs 1 et 2 en fonction des messages MQTT
     def update_led_3(self):
-        # Vérifie si LED 1 et LED 2 sont toutes les deux activées
-        if self.ids.button_on_1.background_color == vert and self.ids.button_on_2.background_color == vert:
+
+        # Vérifie si les deux LEDs sont activées
+        if self.led_1_state == "on" and self.led_2_state == "on":
             # Allume la LED 3
             self.ids.button_on_3.background_color = vert
             self.ids.button_off_3.background_color = gris
             self.ids.good_message.text = "Toutes les LEDs activées !"
-        # Vérifie si LED 1 et LED 2 sont toutes les deux désactivées
-        elif self.ids.button_off_1.background_color == rouge and self.ids.button_off_2.background_color == rouge:
+        # Vérifie si les deux LEDs sont désactivées
+        elif self.led_1_state == "off" and self.led_2_state == "off":
             # Éteint la LED 3
             self.ids.button_off_3.background_color = rouge
             self.ids.button_on_3.background_color = gris
             self.ids.bad_message.text = "Toutes les LEDs désactivées !"
         else:
-            # Si l'une des LEDs est activée et l'autre éteinte, LED 3 en état gris (intermédiaire)
+            # Si l'une des deux LEDs est activée et l'autre éteinte, état intermédiaire pour LED 3
             self.ids.button_on_3.background_color = gris
             self.ids.button_off_3.background_color = gris
+
         Clock.schedule_once(self.clear_message, 1)
 
 
+
+
+
+    # Fonction toggle pour LED 1 (On)
     def toggle_on_1(self):
         client = MQTT(topic="IUT/led_1")
         client.connection()
@@ -142,10 +217,13 @@ class SuccessScreen(Screen):
         Clock.schedule_once(self.clear_message, 1)
         client.envoi(message="led_1_on")
 
+        # Met à jour l'état de la LED 1
+        self.led_1_state = "on"
+        
         # Mettre à jour l'état de la LED 3
         self.update_led_3()
 
-
+    # Fonction toggle pour LED 1 (Off)
     def toggle_off_1(self):
         client = MQTT(topic="IUT/led_1")
         client.connection()
@@ -155,10 +233,13 @@ class SuccessScreen(Screen):
         Clock.schedule_once(self.clear_message, 1)
         client.envoi(message="led_1_off")
 
+        # Met à jour l'état de la LED 1
+        self.led_1_state = "off"
+        
         # Mettre à jour l'état de la LED 3
         self.update_led_3()
 
-
+    # Fonction toggle pour LED 2 (On)
     def toggle_on_2(self):
         client = MQTT(topic="IUT/led_2")
         client.connection()
@@ -168,10 +249,13 @@ class SuccessScreen(Screen):
         Clock.schedule_once(self.clear_message, 1)
         client.envoi(message="led_2_on")
 
+        # Met à jour l'état de la LED 2
+        self.led_2_state = "on"
+        
         # Mettre à jour l'état de la LED 3
         self.update_led_3()
 
-
+    # Fonction toggle pour LED 2 (Off)
     def toggle_off_2(self):
         client = MQTT(topic="IUT/led_2")
         client.connection()
@@ -181,21 +265,23 @@ class SuccessScreen(Screen):
         Clock.schedule_once(self.clear_message, 1)
         client.envoi(message="led_2_off")
 
+        # Met à jour l'état de la LED 2
+        self.led_2_state = "off"
+        
         # Mettre à jour l'état de la LED 3
         self.update_led_3()
 
-
+    # Fonction toggle pour LED 3 (On)
     def toggle_on_3(self):
         # Si l'utilisateur veut allumer la LED 3 manuellement, on allume les deux premières LEDs
         self.toggle_on_1()
         self.toggle_on_2()
 
-
+    # Fonction toggle pour LED 3 (Off)
     def toggle_off_3(self):
         # Si l'utilisateur veut éteindre la LED 3 manuellement, on éteint les deux premières LEDs
         self.toggle_off_1()
         self.toggle_off_2()
-
 
 
 
