@@ -7,9 +7,8 @@ from kivy.lang import Builder
 from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
 from kivy.clock import Clock
-#mqtt
+# mqtt
 from MQTT import *
-
 
 gris = [0.5, 0.5, 0.5, 1]
 rouge = [1, 0, 0, 1]
@@ -35,10 +34,6 @@ class LoginScreen(Screen):
             self.ids.message_label.text = "Nom d'utilisateur ou mdp incorrect"
             Clock.schedule_once(self.clear_message, 2.5)
 
-
-
-
-
     def resetForm(self):
         self.ids.username_input.text = ""
         self.ids.password_input.text = ""
@@ -49,14 +44,7 @@ class LoginScreen(Screen):
     def clear_message(self, dt):
         self.ids.message_label.text = ""
 
-        
-
-
-
-
 class SuccessScreen(Screen):
-
-
     def on_back(self):
         self.manager.transition = SlideTransition(direction="right")
         self.manager.current = 'login'
@@ -79,8 +67,6 @@ class SuccessScreen(Screen):
                 # Mettre à jour l'UI de manière sûre en utilisant Clock.schedule_once
                 Clock.schedule_once(lambda dt: self.update_temperature_ui(temperature))
                 time.sleep(1)
-                # Afficher la température dans le terminal pour le débogage
-                print("Température reçue : ", temperature)
 
             except Exception as e:
                 # Afficher un message d'erreur en cas de problème de connexion
@@ -92,32 +78,11 @@ class SuccessScreen(Screen):
         # Mettre à jour le texte du label de température
         self.ids.temperature_2.text = f"{temperature}"
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     def __init__(self, **kwargs):
         super(SuccessScreen, self).__init__(**kwargs)
         # Ajout des variables d'état pour LED 1 et LED 2
         self.led_1_state = "off"  # Etat initial de la LED 1
         self.led_2_state = "off"  # Etat initial de la LED 2
-
-
 
     def start_update_led(self):
         # Créer un thread pour écouter les messages MQTT sans bloquer l'interface
@@ -125,7 +90,6 @@ class SuccessScreen(Screen):
 
     # Fonction qui tourne en continu dans un thread séparé
     def listen_for_led(self):
-
         client_1 = MQTT(topic="IUT/led_1")
         client_1.connection()
 
@@ -134,9 +98,7 @@ class SuccessScreen(Screen):
 
         while True:
             try:
-      
                 # Mettre à jour l'UI de manière sûre en utilisant Clock.schedule_once
-                
                 msg_1 = client_1.get_messages()
                 msg_2 = client_2.get_messages()
                 led_1_state = "none"
@@ -145,10 +107,10 @@ class SuccessScreen(Screen):
                 if msg_1 == "led_1_on":
                     self.ids.button_on_1.background_color = vert
                     self.ids.button_off_1.background_color = gris              
-                
                 elif msg_1 == "led_1_off":
                     self.ids.button_off_1.background_color = rouge
                     self.ids.button_on_1.background_color = gris
+
                 if msg_2 == "led_2_on":     
                     self.ids.button_on_2.background_color = vert
                     self.ids.button_off_2.background_color = gris
@@ -166,24 +128,15 @@ class SuccessScreen(Screen):
                     self.ids.button_on_3.background_color = gris
                     self.ids.button_off_3.background_color = gris
 
-
-        
-                
                 time.sleep(1)
-                # Afficher la température dans le terminal pour le débogage
-                print("led reçue : ", msg_1, msg_2)
 
             except Exception as e:
                 # Afficher un message d'erreur en cas de problème de connexion
                 print(f"Erreur de connexion MQTT : {str(e)}")
                 Clock.schedule_once(lambda dt: self.update_temperature_ui("Erreur de connexion"))
 
-
-
-
     # Fonction pour vérifier les états des LEDs 1 et 2 en fonction des messages MQTT
     def update_led_3(self):
-
         # Vérifie si les deux LEDs sont activées
         if self.led_1_state == "on" and self.led_2_state == "on":
             # Allume la LED 3
@@ -202,10 +155,6 @@ class SuccessScreen(Screen):
             self.ids.button_off_3.background_color = gris
 
         Clock.schedule_once(self.clear_message, 1)
-
-
-
-
 
     # Fonction toggle pour LED 1 (On)
     def toggle_on_1(self):
@@ -308,13 +257,7 @@ class SuccessScreen(Screen):
 
 
 
-
-
-
-
     def save_time_schedule(self):
-
-        client = MQTT(client = "horaires")
 
 
 
@@ -344,6 +287,20 @@ class SuccessScreen(Screen):
         start_timestamp2 = int(start_time2.timestamp())
         end_timestamp2 = int(end_time2.timestamp())
 
+        # Convertir les timestamps en heure locale française
+        start_time1_fr = datetime.fromtimestamp(start_timestamp1).strftime('%H:%M:%S')
+        end_time1_fr = datetime.fromtimestamp(end_timestamp1).strftime('%H:%M:%S')
+        start_time2_fr = datetime.fromtimestamp(start_timestamp2).strftime('%H:%M:%S')
+        end_time2_fr = datetime.fromtimestamp(end_timestamp2).strftime('%H:%M:%S')
+
+        # Print timestamps to terminal
+        print(f"Start Time 1: {start_time1_fr}")
+        print(f"End Time 1: {end_time1_fr}")
+        print(f"Start Time 2: {start_time2_fr}")
+        print(f"End Time 2: {end_time2_fr}")
+
+
+
         # Vérifier si les plages horaires sont configurées
         is_schedule1_configured = not (start_hour1 == 0 and start_minute1 == 0 and end_hour1 == 0 and end_minute1 == 0)
         is_schedule2_configured = not (start_hour2 == 0 and start_minute2 == 0 and end_hour2 == 0 and end_minute2 == 0)
@@ -352,22 +309,26 @@ class SuccessScreen(Screen):
             if start_timestamp1 >= end_timestamp1:
                 self.ids.bad_message.text = "Plage 1 : échec lors de l'enregistrement"
                 Clock.schedule_once(self.clear_message, 3)
-                return
+            else:
+                # Allumer les leds 1 pendant cette plage horaire
+
 
         if is_schedule2_configured:
             if start_timestamp2 >= end_timestamp2:
                 self.ids.bad_message.text = "Plage 2 : échec lors de l'enregistrement"
                 Clock.schedule_once(self.clear_message, 3)
-                return
+            else:
+                # Allumer les leds 2 pendant cette plage horaire
+                
 
         if not (is_schedule1_configured or is_schedule2_configured):
             self.ids.bad_message.text = "Aucune plage horaire configurée"
             Clock.schedule_once(self.clear_message, 3)
             return
 
-        self.ids.good_message.text = "Enregistrement réussi !"
-        Clock.schedule_once(self.clear_message, 3)
-
+        if self.ids.bad_message.text == "":
+            self.ids.good_message.text = "Enregistrement réussi !"
+            Clock.schedule_once(self.clear_message, 3)
 
     def clear_message(self, dt):
         self.ids.good_message.text = ""
