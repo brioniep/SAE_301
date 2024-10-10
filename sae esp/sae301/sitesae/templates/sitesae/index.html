@@ -1,0 +1,369 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>Contrôle de la prise connectée</title>
+    <script>
+        function updateTime() {
+            const now = new Date();
+            document.getElementById("current_time").innerText = now.toLocaleTimeString();
+        }
+        setInterval(updateTime, 1000);  // Update time every second
+        updateTime();  // Initialize
+    </script>
+    <style>
+        /* Style général */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            
+        }
+
+        /* Style du conteneur principal */
+
+        
+
+        /* Style pour la création de planning (droite) */
+        form {
+            width: 40%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Style pour les plannings actuels (gauche) */
+        table {
+            width: 55%;
+            background-color: #fff;
+            border-collapse: collapse;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table th {
+            background-color: #f4f4f4;
+        }
+
+        /* Style pour les boutons de contrôle des prises en bas */
+        #controls {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Style pour le bouton "Supprimer" en rouge */
+        .btn-danger {
+            background-color: #f44336;
+            margin: 0;
+        }
+
+        .btn-danger:hover {
+            background-color: #e53935;
+        }
+
+        h1, h2{
+            text-align: center;
+        }
+
+        
+        
+        .flexhaut{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #f5f5f5;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+/* to the right of controle de la prise connecté */
+
+        
+
+
+        /* Style pour les informations de température et d'heure */
+        .info-display {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* Style pour les plannings actuels et ajout de planning */
+
+        .section-container {
+            display: flex;
+            box-sizing: border-box;
+            justify-content: space-around;
+            margin-top: 20px;
+            padding-left: 50px;
+        }
+
+        /* Style pour les plannings actuels (gauche) */
+        
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .container_haut{
+            border-color: #e53935;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #f5f5f5;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        
+
+
+
+        
+       
+
+    </style>
+</head>
+<body>
+    <div >
+    <h1>Contrôle de la prise connectée</h1>
+    <!-- Ajout du bouton Se déconnecter -->
+    
+    </div>
+    
+
+    <!-- Affichage de la température et de l'heure au centre -->
+    <div class="info-display">
+        <p>Température actuelle : <span id="temp_value">--</span></p>
+        <p>Heure actuelle: <span id="current_time"></span></p>
+    </div>
+
+    <!-- Conteneur pour Plannings Actuels (gauche) et Ajout de planning (droite) -->
+    <div class="section-container">
+        <!-- Table des plannings actuels (gauche) -->
+        <div>
+            <div class="led-status">
+                <h2>État des LEDs</h2>
+                <p>LED 1 (ID: 1) est actuellement : <strong data-led="1">{{ led_1_state }}</strong></p>
+                <p>LED 2 (ID: 2) est actuellement : <strong data-led="2">{{ led_2_state }}</strong></p>
+            </div>
+            
+            
+            <h2>Plannings Actuels</h2>
+
+            <form method="POST" action="{% url 'sitesae/delete_all_schedules' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Supprimer tous les plannings</button>
+            </form>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID de la prise</th>
+                        <th>Heure de début</th>
+                        <th>Heure de fin</th>
+                        <th>État actuel</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for schedule in schedules %}
+                    <tr>
+                        <td>{{ schedule.prise_id }}</td>
+                        <td>{{ schedule.start_time }}</td>
+                        <td>{{ schedule.end_time }}</td>
+                        <td>
+                            {% if schedule.is_active %}
+                                Actif
+                            {% else %}
+                                Inactif
+                            {% endif %}
+                        </td>
+                        <td>
+                            <form method="POST" action="{% url 'sitesae/delete_schedule' schedule.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Formulaire pour ajouter une plage horaire (droite) -->
+        <!-- Formulaire pour ajouter une plage horaire (droite) -->
+<!-- Formulaire pour ajouter une plage horaire (droite) -->
+<div>
+    <h2>Ajouter une plage horaire</h2>
+    <form method="POST" action="{% url 'add_schedule' %}">
+        {% csrf_token %}
+        
+        <label for="email">Votre Email :</label>
+        <input type="email" id="email" name="email" placeholder="exemple@domaine.com" required>
+        <br>
+        
+        <label for="phone">Votre Numéro de téléphone :</label>
+        <input type="tel" id="phone" name="phone" placeholder="+33XXXXXXXXX" required>
+        <br>
+        
+        <label for="prise_id">Choisir la prise :</label>
+        <select id="prise_id" name="prise_id" required>
+            <option value="1">Prise 1</option>
+            <option value="2">Prise 2</option>
+        </select>
+        <br>
+        
+        <label for="start_time">Heure de début :</label>
+        <input type="time" id="start_time" name="start_time" required>
+        <br>
+        
+        <label for="end_time">Heure de fin :</label>
+        <input type="time" id="end_time" name="end_time" required>
+        <br>
+        
+        <button type="submit">Ajouter</button>
+    </form>
+</div>
+
+
+        
+    </div>
+
+    <!-- Control the outlets manually, centered at the bottom -->
+    <div id="controls">
+        <h2>Contrôle des prises</h2>
+        <button onclick="window.location.href='{% url 'turn_on' 1 %}'">Allumer Prise 1</button>
+        <button onclick="window.location.href='{% url 'turn_off' 1 %}'">Éteindre Prise 1</button>
+        <br>
+        <button onclick="window.location.href='{% url 'turn_on' 2 %}'">Allumer Prise 2</button>
+        <button onclick="window.location.href='{% url 'turn_off' 2 %}'">Éteindre Prise 2</button>
+        <br>
+        <button onclick="window.location.href='{% url 'turn_on_all' %}'">Allumer les deux prises</button>
+        <button onclick="window.location.href='{% url 'turn_off_all' %}'">Éteindre les deux prises</button>
+    </div>
+
+    <form action="{% url 'sitesae/logout' %}" method="POST">
+        {% csrf_token %}
+        <button type="submit">Se déconnecter</button>
+    </form>
+
+    <!-- Add JavaScript to periodically enforce the schedule -->
+    <script>
+        setInterval(function() {
+            fetch('/enforce_schedules/');  // Call the server to enforce schedules
+        }, 60000);  // Check every minute
+        function updateTemperature() {
+    console.log("Fetching temperature data..."); // Log de diagnostic
+    fetch('/temperature/')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Error fetching temperature: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.temperature) {
+                console.log(`Temperature fetched: ${data.temperature}°C`); // Log de la température
+                document.getElementById('temp_value').innerText = data.temperature;
+            } else {
+                console.warn('Temperature data missing, setting to "--"');
+                document.getElementById('temp_value').innerText = '--';
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching temperature:', error);
+            document.getElementById('temp_value').innerText = '--';
+        });
+}
+
+function updateLedStatus() {
+    console.log("Fetching LED status data..."); // Log de diagnostic
+    fetch('/led_status/')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Error fetching LED status: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.led_1_state) {
+                console.log(`LED 1 state fetched: ${data.led_1_state}`);
+                document.querySelector("p strong[data-led='1']").innerText = data.led_1_state;
+            } else {
+                console.warn('LED 1 state missing, setting to "off"');
+                document.querySelector("p strong[data-led='1']").innerText = 'off';
+            }
+
+            if (data.led_2_state) {
+                console.log(`LED 2 state fetched: ${data.led_2_state}`);
+                document.querySelector("p strong[data-led='2']").innerText = data.led_2_state;
+            } else {
+                console.warn('LED 2 state missing, setting to "off"');
+                document.querySelector("p strong[data-led='2']").innerText = 'off';
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching LED status:', error);
+        });
+}
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Récupérer les valeurs sauvegardées
+        const savedEmail = localStorage.getItem('userEmail');
+        const savedPhone = localStorage.getItem('userPhone');
+        
+        if (savedEmail) {
+            document.getElementById('email').value = savedEmail;
+        }
+        
+        if (savedPhone) {
+            document.getElementById('phone').value = savedPhone;
+        }
+
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function() {
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('userPhone', phone);
+        });
+    });
+
+
+// Appeler updateTemperature toutes les 5 secondes
+setInterval(updateTemperature, 5000);
+updateTemperature();  // Initialisation
+
+setInterval(updateLedStatus, 5000);
+updateLedStatus();  // Initialisation
+
+    </script>
+</body>
+</html>
