@@ -1,0 +1,2 @@
+Ajout a partir d'un fichier csv
+https://python.plainenglish.io/importing-csv-data-into-django-models-c92a303623fe

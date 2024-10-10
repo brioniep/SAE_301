@@ -1,0 +1,242 @@
+body {
+  background-color: #08090D; /* dark-forest-with-spooky-man-walking-on-a-path-1-hex */
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+#organisation {
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  height: 100vh; /* Assurez-vous que le conteneur prend toute la hauteur de la page */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform-style: preserve-3d;
+  transition: all 1s ease;
+  width: 400px; /* Augmenter la largeur de la boîte */
+  height: 500px; /* Augmenter la hauteur de la boîte */
+}
+
+.form .form_front, .form .form_back {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  position: absolute;
+  backface-visibility: hidden;
+  padding: 80px 60px; /* Augmenter le padding pour plus d'espace intérieur */
+  border-radius: 15px;
+  box-shadow: inset 2px 2px 10px rgba(0,0,0,1),
+  inset -1px -1px 5px rgba(255, 255, 255, 0.6);
+  background-color: #1A1E26; /* dark-forest-with-spooky-man-walking-on-a-path-2-hex */
+}
+
+.form .form_back {
+  transform: rotateY(-180deg);
+}
+
+.form_details {
+  font-size: 30px; /* Augmenter la taille de la police */
+  font-weight: 600;
+  padding-bottom: 10px;
+  color: #A1A69C; /* dark-forest-with-spooky-man-walking-on-a-path-5-hex */
+}
+
+.input {
+  width: 300px; /* Augmenter la largeur des champs de saisie */
+  min-height: 50px; /* Augmenter la hauteur des champs de saisie */
+  color: #fff;
+  outline: none;
+  transition: 0.35s;
+  padding: 0px 10px; /* Augmenter le padding pour plus d'espace intérieur */
+  background-color: #343A40; /* dark-forest-with-spooky-man-walking-on-a-path-3-hex */
+  border-radius: 6px;
+  border: 2px solid #343A40; /* dark-forest-with-spooky-man-walking-on-a-path-3-hex */
+  box-shadow: 6px 6px 10px rgba(0,0,0,1),
+  1px 1px 10px rgba(255, 255, 255, 0.6);
+  margin-bottom: 20px; /* Ajouter une marge inférieure pour espacer les champs */
+}
+
+.input::placeholder {
+  color: #6E7371; /* dark-forest-with-spooky-man-walking-on-a-path-4-hex */
+}
+
+.input:focus.input::placeholder {
+  transition: 0.3s;
+  opacity: 0;
+}
+
+.input:focus {
+  transform: scale(1.05);
+  box-shadow: 6px 6px 10px rgba(0,0,0,1),
+  1px 1px 10px rgba(255, 255, 255, 0.6),
+  inset 2px 2px 10px rgba(0,0,0,1),
+  inset -1px -1px 5px rgba(255, 255, 255, 0.6);
+}
+
+.btn {
+  padding: 15px 45px; /* Augmenter le padding pour des boutons plus grands */
+  cursor: pointer;
+  background-color: #343A40; /* dark-forest-with-spooky-man-walking-on-a-path-3-hex */
+  border-radius: 6px;
+  border: 2px solid #343A40; /* dark-forest-with-spooky-man-walking-on-a-path-3-hex */
+  box-shadow: 6px 6px 10px rgba(0,0,0,1),
+  1px 1px 10px rgba(255, 255, 255, 0.6);
+  color: #fff;
+  font-size: 18px; /* Augmenter la taille de la police */
+  font-weight: bold;
+  transition: 0.35s;
+}
+
+.btn:hover, .btn:focus {
+  transform: scale(1.05);
+  box-shadow: 6px 6px 10px rgba(0,0,0,1),
+  1px 1px 10px rgba(255, 255, 255, 0.6),
+  inset 2px 2px 10px rgba(0,0,0,1),
+  inset -1px -1px 5px rgba(255, 255, 255, 0.6);
+}
+
+.form .switch {
+  font-size: 15px; /* Augmenter la taille de la police */
+  color: #A1A69C; /* dark-forest-with-spooky-man-walking-on-a-path-5-hex */
+}
+
+.form .switch .signup_tog {
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.container #signup_toggle {
+  display: none;
+}
+
+.container #signup_toggle:checked + .form {
+  transform: rotateY(-180deg);
+}
+
+#titre {
+  text-align: center;
+  color: #A1A69C; /* dark-forest-with-spooky-man-walking-on-a-path-5-hex */
+  margin-bottom: -8%;
+  margin-top: 2%;
+  border-style: solid;
+  border-radius: 40px;
+  padding: 2%;
+  margin-left: 30%;
+  margin-right: 30%;
+}
+
+@keyframes blinkCursor {
+  50% {
+    border-right-color: transparent;
+  }
+}
+
+@keyframes typeAndDelete {
+  0%,
+  10% {
+    width: 0;
+  }
+  45%,
+  55% {
+    width: 100%; /* Adjust width to 100% to ensure the entire phrase is displayed */
+  }
+  90%,
+  100% {
+    width: 0;
+  }
+}
+
+.terminal-loader {
+  margin-top: 50%; /* Center vertically */
+  transform: translateY(350%); /* Adjust for exact centering */
+  border: 0.1em solid #333;
+  background-color: #1a1a1a; /* Keep the same color for terminal */
+  color: #0f0; /* Keep the same color for terminal text */
+  font-family: "Courier New", Courier, monospace;
+  font-size: 1em;
+  padding: 1.5em 1.5em; /* Increase padding-right to display the entire message */
+  width: 16em; /* Increase width to fit the entire message */
+  height: 5em; /* Set a smaller height for the loader */
+  margin: 100px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.terminal-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1.5em;
+  background-color: #333;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  padding: 0 0.4em;
+  box-sizing: border-box;
+}
+
+.terminal-controls {
+  float: right;
+}
+
+.control {
+  display: inline-block;
+  width: 0.6em;
+  height: 0.6em;
+  margin-left: 0.4em;
+  border-radius: 50%;
+  background-color: #777;
+}
+
+.control.close {
+  background-color: #e33;
+}
+
+.control.minimize {
+  background-color: #ee0;
+}
+
+.control.maximize {
+  background-color: #0b0;
+}
+
+.terminal-title {
+  float: left;
+  line-height: 1.5em;
+  color: #eee;
+}
+
+.text {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 0.2em solid green; /* Cursor */
+  animation: typeAndDelete 6s steps(30) infinite, /* Adjust steps to match the length of the phrase */
+  blinkCursor 0.5s step-end infinite alternate;
+  margin-top: 1.5em;
+}
+
+h2 {
+  color: #A1A69C; /* dark-forest-with-spooky-man-walking-on-a-path-5-hex */
+  margin-bottom: 6%;
+  padding-bottom: 6%;
+  text-align: center;
+  margin-left: 10%; /* Ajouter une marge à gauche */
+  margin-right: 10%; /* Ajouter une marge à droite */
+  margin-top: -7%;
+}

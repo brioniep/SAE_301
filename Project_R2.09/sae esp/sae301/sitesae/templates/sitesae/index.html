@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        function updateTime() {
+            const now = new Date();
+            document.getElementById("current_time").innerText = now.toLocaleTimeString();
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+    <style>
+        #tableau {
+            background-color: #08090D; /* Fond noir */
+            color: #A1A69C; /* Texte gris clair */
+        }
+
+        #tableau th, #tableau td {
+            color: #A1A69C; /* Texte gris clair pour les cellules */
+        }
+
+        #tableau th {
+            background-color: #343A40; /* Fond gris foncé pour les en-têtes */
+        }
+
+        #tableau tr:nth-child(even) {
+            background-color: #1A1E26; /* Fond gris foncé pour les lignes paires */
+        }
+    </style>
+
+    <style>
+        #ajout_plage h2 {
+            font-size: 1.8em; /* Taille de police du titre */
+            margin-bottom: 20px; /* Marge inférieure */
+        }
+
+        #ajout_plage form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* Espacement entre les éléments du formulaire */
+        }
+
+        #ajout_plage label {
+            font-weight: bold; /* Texte en gras pour les labels */
+        }
+
+        #ajout_plage input, #ajout_plage select, #ajout_plage button {
+            padding: 10px; /* Espacement interne */
+            border-radius: 5px; /* Coins arrondis */
+            border: none; /* Pas de bordure */
+        }
+
+        #ajout_plage button {
+            background-color: #A1A69C; /* Couleur de fond du bouton */
+            color: #08090D; /* Couleur du texte du bouton */
+            cursor: pointer; /* Curseur pointeur */
+            transition: background-color 0.3s ease; /* Transition douce pour le changement de couleur */
+        }
+
+        #ajout_plage button:hover {
+            background-color: #6E7371; /* Couleur de fond du bouton au survol */
+        }
+
+        #tableau {
+            background-color: #08090D;
+            border-collapse: collapse; /* Fusionne les bordures des cellules */
+        }
+    </style>
+    <style>
+        body {
+            background-color: #08090D;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #A1A69C;
+            padding-left: 10%;
+            padding-right: 10%;
+            position: relative;
+        }
+
+        #title {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 40px;
+            font-size: 2.5em; /* Taille de police agrandie */
+            font-weight: bold; /* Police en gras */
+            background: linear-gradient(90deg, #A1A69C, #08090D); /* Dégradé de couleur */
+            -webkit-background-clip: text; /* Clip le fond pour le texte */
+            -webkit-text-fill-color: transparent; /* Remplit le texte avec le fond */
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Ombre du texte pour la profondeur */
+            letter-spacing: 2px; /* Espacement des lettres */
+            line-height: 1.2; /* Hauteur de ligne ajustée pour une meilleure lisibilité */
+            transition: transform 0.3s ease; /* Transition douce pour l'agrandissement */
+        }
+
+        #title:hover {
+            transform: scale(1.05); /* Agrandit légèrement le texte au survol */
+        }
+
+        body::before, body::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            width: 10%;
+            height: 100%;
+            background: linear-gradient(
+                135deg,
+                #08090D 25%,
+                #1A1E26 25%,
+                #1A1E26 50%,
+                #08090D 50%,
+                #08090D 75%,
+                #1A1E26 75%,
+                #1A1E26
+            );
+            background-size: 40px 40px;
+            animation: move 4s linear infinite;
+        }
+
+        body::before {
+            left: 0;
+        }
+
+        body::after {
+            right: 0;
+        }
+
+        @keyframes move {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 40px 40px;
+            }
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Deux colonnes */
+            gap: 50px; /* Réduit l'espacement entre les cartes */
+            padding: 20px;
+        }
+
+        .card, .info-display {
+            border-radius: 30px;
+            padding: 2%;
+            background: #08090D;
+            box-shadow: 15px 15px 30px rgb(25, 25, 25), -15px -15px 30px rgb(60, 60, 60);
+            margin: 0; /* Enlève la marge verticale des cartes */
+            padding: 5%;
+            margin-top: 4%;
+            margin-bottom: 4%;
+            margin-left: 3%;
+            margin-right: 3%;
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            background-color: #08090D;
+            border-collapse: collapse;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table th {
+            background-color: #343A40;
+        }
+
+        tr:nth-child(even) {
+            background-color: #1A1E26;
+        }
+
+        .gauche {
+            margin-left: 20%;
+        }
+
+        button {
+            font: inherit;
+            background-color: #A1A69C;
+            border: 0;
+            color: #08090D;
+            border-radius: 0.5em;
+            font-size: 1.35rem;
+            padding: 0.375em 1em;
+            font-weight: 600;
+            text-shadow: 0 0.0625em 0 #A1A69C;
+            box-shadow: inset 0 0.0625em 0 0 #A1A69C, 0 0.0625em 0 0 #efefef,
+                0 0.125em 0 0 #ececec, 0 0.25em 0 0 #e0e0e0, 0 0.3125em 0 0 #dedede,
+                0 0.375em 0 0 #dcdcdc, 0 0.425em 0 0 #cacaca, 0 0.425em 0.5em 0 #cecece;
+            transition: 0.15s ease;
+            cursor: pointer;
+            margin: 5%;
+        }
+
+        button:active {
+            translate: 0 0.225em;
+            box-shadow: inset 0 0.03em 0 0 #A1A69C, 0 0.03em 0 0 #efefef,
+                0 0.0625em 0 0 #ececec, 0 0.125em 0 0 #e0e0e0, 0 0.125em 0 0 #dedede,
+                0 0.2em 0 0 #dcdcdc, 0 0.225em 0 0 #cacaca, 0 0.225em 0.375em 0 #cecece;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 id="title">Contrôle de la prise connectée</h1>
+    <div class="container">
+        <div class="card gauche">
+            <h2>État des LEDs</h2>
+            <p>LED 1 (ID: 1) est actuellement : <strong data-led="1">{{ led_1_state }}</strong></p>
+            <p>LED 2 (ID: 2) est actuellement : <strong data-led="2">{{ led_2_state }}</strong></p>
+        </div>
+        <div class="card droite">
+            <h2>Contrôle des prises</h2>
+            <button class="btn" onclick="window.location.href='{% url 'turn_on' 1 %}'">ON led 1</button>
+            <button class="btn" onclick="window.location.href='{% url 'turn_off' 1 %}'">OFF led 1</button>
+            <br>
+            <button class="btn" onclick="window.location.href='{% url 'turn_on' 2 %}'">ON led 2</button>
+            <button class="btn" onclick="window.location.href='{% url 'turn_off' 2 %}'">OFF led 2</button>
+            <br>
+            <button class="btn" onclick="window.location.href='{% url 'turn_on_all' %}'">ON les deux</button>
+            <button class="btn" onclick="window.location.href='{% url 'turn_off_all' %}'">OFF les deux</button>
+        </div>
+
+        <div class="info-display gauche">
+            <h2>Données</h2>
+            <p>Température : <span id="temp_value">--</span></p>
+            <p>Heure actuelle: <span id="current_time"></span></p>
+        </div>
+        <div id="ajout_plage" class="card droite">
+            <h2>Ajouter une plage horaire</h2>
+            <form method="POST" action="{% url 'add_schedule' %}">
+                {% csrf_token %}
+                <select id="prise_id" name="prise_id" required>
+                    <option value="1">Prise 1</option>
+                    <option value="2">Prise 2</option>
+                </select>
+                <br>
+                <label for="start_time">Heure de début :</label>
+                <input type="time" id="start_time" name="start_time" required>
+                <br>
+                <label for="end_time">Heure de fin :</label>
+                <input type="time" id="end_time" name="end_time" required>
+                <br>
+                <button type="submit">Ajouter</button>
+            </form>
+        </div>
+
+        <div class="card" style="grid-column: span 2;"> <!-- Cette carte s'étend sur deux colonnes -->
+            <h2>Plannings Actuels</h2>
+            <form method="POST" action="{% url 'sitesae/delete_all_schedules' %}">
+                {% csrf_token %}
+                <button type="submit">Supprimer tous les plannings</button>
+            </form>
+            <table id="tableau">
+                <thead>
+                    <tr>
+                        <th>ID de la prise</th>
+                        <th>Heure de début</th>
+                        <th>Heure de fin</th>
+                        <th>État actuel</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for schedule in schedules %}
+                    <tr>
+                        <td>{{ schedule.prise_id }}</td>
+                        <td>{{ schedule.start_time }}</td>
+                        <td>{{ schedule.end_time }}</td>
+                        <td>{{ schedule.is_active|yesno:"Actif,Inactif" }}</td>
+                        <td>
+                            <form method="POST" action="{% url 'sitesae/delete_schedule' schedule.id %}">
+                                {% csrf_token %}
+                                <button type="submit">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <form action="{% url 'sitesae/logout' %}" method="POST">
+        {% csrf_token %}
+        <button type="submit">Se déconnecter</button>
+    </form>
+    <script>
+        setInterval(function() {
+            fetch('/enforce_schedules/');
+        }, 60000);
+        function updateTemperature() {
+            fetch('/temperature/')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('temp_value').innerText = data.temperature || '--';
+                })
+                .catch(() => {
+                    document.getElementById('temp_value').innerText = '--';
+                });
+        }
+        function updateLedStatus() {
+            fetch('/led_status/')
+                .then(response => response.json())
+                .then(data => {
+                    document.querySelector("p strong[data-led='1']").innerText = data.led_1_state || 'off';
+                    document.querySelector("p strong[data-led='2']").innerText = data.led_2_state || 'off';
+                })
+                .catch(() => {
+                    document.querySelector("p strong[data-led='1']").innerText = 'off';
+                    document.querySelector("p strong[data-led='2']").innerText = 'off';
+                });
+        }
+        setInterval(updateTemperature, 5000);
+        updateTemperature();
+        setInterval(updateLedStatus, 5000);
+        updateLedStatus();
+    </script>
+</body>
+</html>

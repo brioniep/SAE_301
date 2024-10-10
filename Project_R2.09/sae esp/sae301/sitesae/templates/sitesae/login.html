@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
+    <title>Connexion</title>
+    <style>
+        .clock {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5em;
+            font-family: 'Arial', sans-serif;
+            color: aliceblue;
+        }
+    </style>
+</head>
+
+
+
+
+
+<body>
+
+
+<h1 id="titre">SAE 3.01 👉 prise wifi connectée </h1>
+
+<div id="organisation">
+  <div class="terminal-loader">
+    <div class="terminal-header">
+      <div class="terminal-title">ESP_32</div>
+      <div class="terminal-controls">
+        <div class="control close"></div>
+        <div class="control minimize"></div>
+        <div class="control maximize"></div>
+      </div>
+    </div>
+    <div class="text">welcome to sae_301...</div>
+  </div>
+  
+
+  <div class="container">
+    <input type="checkbox" id="signup_toggle">
+    <form class="form" method="post">
+        {% csrf_token %}
+        <div class="form_front">
+            <div class="form_details">Login</div>
+            <input placeholder="Username" class="input" type="text" name="username" id="username" required>
+            <input placeholder="Password" class="input" type="password" name="password" id="password" required>
+            <button class="btn" type="submit">Se connecter</button>
+        </div>
+    </form>
+  </div>
+  
+
+
+
+
+  <div class="terminal-loader">
+    <div class="terminal-header">
+      <div class="terminal-title">ESP_32</div>
+      <div class="terminal-controls">
+        <div class="control close"></div>
+        <div class="control minimize"></div>
+        <div class="control maximize"></div>
+      </div>
+    </div>
+    <div class="text">Welcome to sae_301...</div>
+  </div>
+
+
+</div>
+<h2>YANIS / LEONARD / LUDOVIC / ADEL</h2>
+
+
+
+</body>
+</html>

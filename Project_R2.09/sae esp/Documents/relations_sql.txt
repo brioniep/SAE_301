@@ -1,0 +1,110 @@
+Modèle relationnel :
+
+
+ServerType
+id (PK)
+type
+description
+
+
+Server
+id (PK)
+name
+server_type_id (FK) -> ServerType.id
+num_processors
+memory_capacity
+storage_capacity
+used_processors
+used_memory
+
+
+Service
+id (PK)
+name
+launch_date
+memory_used
+required_memory
+required_processors
+launch_server_id (FK) -> Server.id
+
+ServUser
+id (PK)
+first_name
+last_name
+email
+
+Application
+id (PK)
+name
+logo
+user_id (FK) -> ServUser.id
+launch_server_id (FK) -> Server.id
+
+
+Application_Services
+id (PK)
+application_id (FK) -> Application.id
+service_id (FK) -> Service.id
+
+
+ResourceUsage
+id (PK)
+application_id (FK) -> Application.id
+service_id (FK) -> Service.id
+
+
+Commandes MYSQL : 
+
+CREATE TABLE ServerType (
+    id SERIAL PRIMARY KEY,
+    type VARCHAR(200) NOT NULL,
+    description TEXT NOT NULL
+);
+
+CREATE TABLE Server (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    server_type_id INTEGER NOT NULL REFERENCES ServerType(id) ON DELETE CASCADE,
+    num_processors INTEGER NOT NULL,
+    memory_capacity INTEGER NOT NULL,
+    storage_capacity INTEGER NOT NULL,
+    used_processors INTEGER DEFAULT 0,
+    used_memory INTEGER DEFAULT 0
+);
+
+CREATE TABLE Service (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    launch_date DATE NOT NULL,
+    memory_used INTEGER NOT NULL,
+    required_memory INTEGER NOT NULL,
+    required_processors INTEGER DEFAULT 1,
+    launch_server_id INTEGER NOT NULL REFERENCES Server(id) ON DELETE CASCADE
+);
+
+CREATE TABLE ServUser (
+    id SERIAL PRIMARY KEY,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    email VARCHAR(254) UNIQUE NOT NULL
+);
+
+CREATE TABLE Application (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    logo VARCHAR(100),
+    user_id INTEGER NOT NULL REFERENCES ServUser(id) ON DELETE CASCADE,
+    launch_server_id INTEGER NOT NULL REFERENCES Server(id) ON DELETE CASCADE
+);
+
+CREATE TABLE Application_Services (
+    id SERIAL PRIMARY KEY,
+    application_id INTEGER NOT NULL REFERENCES Application(id) ON DELETE CASCADE,
+    service_id INTEGER NOT NULL REFERENCES Service(id) ON DELETE CASCADE
+);
+
+CREATE TABLE ResourceUsage (
+    id SERIAL PRIMARY KEY,
+    application_id INTEGER NOT NULL REFERENCES Application(id) ON DELETE CASCADE,
+    service_id INTEGER NOT NULL REFERENCES Service(id) ON DELETE CASCADE
+);
