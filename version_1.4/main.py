@@ -94,7 +94,7 @@ class SuccessScreen(Screen):
     # Fonction pour mettre à jour l'UI
     def update_temperature_ui(self, temperature):
         # Mettre à jour le texte du label de température
-        self.ids.temperature_2.text = f"{temperature}"
+        self.ids.temperature_2.text = f"{temperature} °C"
 
 
 
