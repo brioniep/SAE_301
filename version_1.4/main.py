@@ -1,7 +1,7 @@
 from datetime import datetime, time as dt_time
 import threading    
 import time  # Assure-toi d'importer ce module pour utiliser sleep
-
+from plyer import notification
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.core.window import Window
@@ -68,10 +68,44 @@ class SuccessScreen(Screen):
                 Clock.schedule_once(lambda dt: self.update_temperature_ui(temperature))
                 time.sleep(1)
 
+                if float(temperature) > 40:
+                    # Envoyer une notification système avec Plyer
+                    self.send_temperature_notification(temperature)
+
+                time.sleep(1)
+
             except Exception as e:
                 # Afficher un message d'erreur en cas de problème de connexion
                 print(f"Erreur de connexion MQTT : {str(e)}")
                 Clock.schedule_once(lambda dt: self.update_temperature_ui("Erreur de connexion"))
+
+
+    
+
+    # Fonction pour envoyer une notification si la température dépasse 50°C
+    def send_temperature_notification(self, temperature):
+        # Utiliser Plyer pour envoyer une notification système
+        notification.notify(
+            title='Alerte Température Élevée',
+            message=f'La température a dépassé 50°C : {temperature}°C',
+            timeout=5  # Durée de la notification en secondes
+        )
+
+    # Fonction pour mettre à jour l'UI
+    def update_temperature_ui(self, temperature):
+        # Mettre à jour le texte du label de température
+        self.ids.temperature_2.text = f"{temperature}"
+
+
+
+
+
+
+
+
+
+
+
 
     # Fonction pour mettre à jour l'UI
     def update_temperature_ui(self, temperature):
@@ -309,7 +343,7 @@ class SuccessScreen(Screen):
             if start_timestamp1 >= end_timestamp1:
                 self.ids.bad_message.text = "Plage 1 : échec lors de l'enregistrement"
                 Clock.schedule_once(self.clear_message, 3)
-            else:
+            #else:
                 # Allumer les leds 1 pendant cette plage horaire
 
 
@@ -317,7 +351,7 @@ class SuccessScreen(Screen):
             if start_timestamp2 >= end_timestamp2:
                 self.ids.bad_message.text = "Plage 2 : échec lors de l'enregistrement"
                 Clock.schedule_once(self.clear_message, 3)
-            else:
+            #else:
                 # Allumer les leds 2 pendant cette plage horaire
                 
 
