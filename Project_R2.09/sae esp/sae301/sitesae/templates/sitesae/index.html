@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -233,21 +234,34 @@
         </div>
         <div id="ajout_plage" class="card droite">
             <h2>Ajouter une plage horaire</h2>
-            <form method="POST" action="{% url 'add_schedule' %}">
-                {% csrf_token %}
-                <select id="prise_id" name="prise_id" required>
-                    <option value="1">Prise 1</option>
-                    <option value="2">Prise 2</option>
-                </select>
-                <br>
-                <label for="start_time">Heure de début :</label>
-                <input type="time" id="start_time" name="start_time" required>
-                <br>
-                <label for="end_time">Heure de fin :</label>
-                <input type="time" id="end_time" name="end_time" required>
-                <br>
-                <button type="submit">Ajouter</button>
-            </form>
+    <form method="POST" action="{% url 'add_schedule' %}">
+        {% csrf_token %}
+        
+        <label for="email">Votre Email :</label>
+        <input type="email" id="email" name="email" placeholder="exemple@domaine.com" required>
+        <br>
+        
+        <label for="phone">Votre Numéro de téléphone :</label>
+        <input type="tel" id="phone" name="phone" placeholder="+33XXXXXXXXX" required>
+        <br>
+        
+        <label for="prise_id">Choisir la prise :</label>
+        <select id="prise_id" name="prise_id" required>
+            <option value="1">Prise 1</option>
+            <option value="2">Prise 2</option>
+        </select>
+        <br>
+        
+        <label for="start_time">Heure de début :</label>
+        <input type="time" id="start_time" name="start_time" required>
+        <br>
+        
+        <label for="end_time">Heure de fin :</label>
+        <input type="time" id="end_time" name="end_time" required>
+        <br>
+        
+        <button type="submit">Ajouter</button>
+    </form>
         </div>
 
         <div class="card" style="grid-column: span 2;"> <!-- Cette carte s'étend sur deux colonnes -->
