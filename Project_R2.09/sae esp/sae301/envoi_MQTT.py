@@ -2,7 +2,7 @@ import paho.mqtt.client as mqtt
 import time
 
 class MQTT():
-    def __init__(self, broker="broker.hivemq.com", topic="IUT/led_1"):
+    def __init__(self, broker="broker.hivemq.com", topic="IUT/on/off/led_1"):
         self.__broker = broker
         self.__topics = topic
         self.__client = None
@@ -43,16 +43,23 @@ class MQTT():
         self.__client.loop_start()  # Utiliser loop_start() pour démarrer la boucle de réception dans un thread séparé
 
 if __name__ == "__main__":
-    envoyeur = MQTT()
-    envoyeur1 = MQTT(broker="broker.hivemq.com", topic="IUT/led_2")
-    enovyeur2 = MQTT(broker="broker.hivemq.com", topic="IUT/temperature")
-    envoyeur.connection()
-    envoyeur1.connection()
-    enovyeur2.connection()
+    led_1_envois = MQTT()
+    led_2_envois = MQTT(broker="broker.hivemq.com", topic="IUT/on/off/led_2")
+    led_1_etat = MQTT(broker="broker.hivemq.com", topic="IUT/etat/led_1")
+    led_2_etat = MQTT(broker="broker.hivemq.com", topic="IUT/etat/led_2")
+    temperature = MQTT(broker="broker.hivemq.com", topic="IUT/temperature")
+    led_1_envois.connection()
+    led_2_envois.connection()
+    led_1_etat.connection()
+    led_2_etat.connection()
+    temperature.connection()
+
 
     while True:
         
-        print("message reçu (topic 1 led): ", envoyeur.get_messages())
-        print("message reçu (topic 2 led) : ", envoyeur1.get_messages())
-        print("message reçu (topic temperature) : ", enovyeur2.get_messages())
+        print("message reçu (topic 1 led envoi): ", led_1_envois.get_messages())
+        print("message reçu (topic 2 led envoi) : ", led_2_envois.get_messages())
+        print("message reçu (topic 1 led etat) : ", led_1_etat.get_messages())
+        print("message reçu (topic 2 led etat) : ", led_2_etat.get_messages())
+        print("message reçu (topic temperature) : ", temperature.get_messages())
         time.sleep(1)
