@@ -1,8 +1,6 @@
 # SAE_301
 
-
-
-
-
-
-[Capture vidéo du 2024-10-11 09-01-08(1).webm](https://github.com/user-attachments/assets/f2617550-6221-409a-b977-de01dd8afd21)
+<video width="560" height="315" autoplay loop muted>
+  <source src="https://github.com/brioniep/SAE_301/blob/main/Capture%20vid%C3%A9o%20du%202024-10-11%2009-01-08.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
