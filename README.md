@@ -1,6 +1,2 @@
 # SAE_301
-
-<video width="560" height="315" autoplay loop muted>
-  <source src="https://github.com/user-attachments/assets/f2617550-6221-409a-b977-de01dd8afd21" type="video/webm">
-  Your browser does not support the video tag.
-</video>
+![Capture-vidéo-du-2024-10-11-09-01-08](https://github.com/user-attachments/assets/d00e6ab4-4f8e-46d1-bcca-16b05eea39c9)
