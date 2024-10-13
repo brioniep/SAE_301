@@ -4,4 +4,9 @@
 
 
 
-<iframe width="560" height="315" src="URL_DE_VOTRE_LIVE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+# SAE_301
+
+<video width="560" height="315" controls>
+  <source src="https://github.com/brioniep/SAE_301/blob/main/Capture%20vid%C3%A9o%20du%202024-10-11%2009-01-08.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
