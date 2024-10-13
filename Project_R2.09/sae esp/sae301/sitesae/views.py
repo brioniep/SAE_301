@@ -14,11 +14,19 @@ from email.mime.multipart import MIMEMultipart
 from twilio.rest import Client
 
 
+# Tmpérature : IUT/température 
+
+# Leds : IUT/on/off/led_1    ( ou _2)
+
+# États des LEDs : IUT/etat/led_1    ( ou _2)
+
 prise_states = {}
 # Initialiser les clients MQTT
 mqtt_client_temperature = MQTT(topic="IUT/temperature")  # Capteur de température
-mqtt_client_led_1 = MQTT(topic="IUT/led_1")  # LED 1
-mqtt_client_led_2 = MQTT(topic="IUT/led_2")  # LED 2
+mqtt_client_led_1 = MQTT(topic="IUT/on/off/led_1")  # LED 1 on/off
+mqtt_client_led_2 = MQTT(topic="IUT/on/off/led_2")  # LED 2 on/off
+mqtt_client_led_1_état = MQTT(topic="IUT/etat/led_1")  # LED 1 etat
+mqtt_client_led_2_état = MQTT(topic="IUT/etat/led_2")  # LED 2 etat
 mqtt_client_temperature.connection()
 mqtt_client_led_1.connection()
 mqtt_client_led_2.connection()
@@ -44,8 +52,8 @@ def index(request):
     schedules = Schedule.objects.all()
 
     # Récupérer les états des LEDs depuis le client MQTT
-    led_1_state = mqtt_client_led_1.get_messages()  # Récupérer l'état de la LED 1
-    led_2_state = mqtt_client_led_2.get_messages()  # Récupérer l'état de la LED 2
+    led_1_state = mqtt_client_led_1_état.get_messages()  # Récupérer l'état de la LED 1
+    led_2_state = mqtt_client_led_2_état.get_messages()  # Récupérer l'état de la LED 2
 
     # Passer les états des LEDs au template
     context = {
@@ -143,6 +151,8 @@ def check_schedule():
             
             # Récupère l'état actuel de la prise (par défaut 'off')
             current_state = prise_states.get(schedule.prise_id, 'off')
+            
+            
 
             # Si l'état désiré est différent de l'état actuel, envoyer un message MQTT
             if schedule.prise_id == 1:
@@ -321,8 +331,10 @@ def delete_all_schedules(request):
 
 
 def get_led_status(request):
-    led_1_state = mqtt_client_led_1.get_messages()  # Récupérer l'état de la LED 1
-    led_2_state = mqtt_client_led_2.get_messages()  # Récupérer l'état de la LED 2
+    # Récupérer les états des LEDs depuis le client MQTT
+    led_1_state = mqtt_client_led_1_état.get_messages()  # Récupérer l'état de la LED 1
+    led_2_state = mqtt_client_led_2_état.get_messages()  # Récupérer l'état de la LED 2
+    
 
     # Retourner les états des LEDs sous forme de JSON
     return JsonResponse({
@@ -334,9 +346,9 @@ def get_led_status(request):
 def send_email(to_email, subject, body, to_phone=None):
     from_email = "l.petit02400@gmail.com"
     from_password = "dfyh xbiv nxft sqdv"
-
+    
     # Configuration du serveur SMTP de Gmail
-    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server = smtplib.SMTP('smtp.gmail.com', 587) #587 for TLS
     server.starttls()
     
     try:
