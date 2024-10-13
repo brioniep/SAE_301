@@ -366,6 +366,6 @@ class MyApp(App):
         return sm
 
 if __name__ == '__main__':
-    Window.size = (360, 640)
+    
     Builder.load_file("main.kv")
     MyApp().run()
