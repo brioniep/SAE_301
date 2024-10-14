@@ -273,22 +273,43 @@ class SuccessScreen(Screen):
 
 
 
+    def check_time_and_control_leds(self, start_time1, end_time1, start_time2, end_time2):
+        led_1_turned_off = False
+        led_2_turned_off = False
 
+        while True:
+            now = datetime.now()
 
+            # Vérification pour la plage 1 (LED 1)
+            if start_time1 <= now <= end_time1:
+                if self.led_1_state == "off":  # Allume la LED 1 si elle est éteinte
+                    self.toggle_on_1()
+                    led_1_turned_off = False
+            else:
+                if self.led_1_state == "on" and not led_1_turned_off:  # Éteint la LED 1 si elle est allumée
+                    self.toggle_off_1()
+                    led_1_turned_off = True
 
+            # Vérification pour la plage 2 (LED 2)
+            if start_time2 <= now <= end_time2:
+                if self.led_2_state == "off":  # Allume la LED 2 si elle est éteinte
+                    self.toggle_on_2()
+                    led_2_turned_off = False
+            else:
+                if self.led_2_state == "on" and not led_2_turned_off:  # Éteint la LED 2 si elle est allumée
+                    self.toggle_off_2()
+                    led_2_turned_off = True
+
+            time.sleep(1)  # Attendre 1 seconde avant de vérifier à nouveau
 
 
 
 
 
     def save_time_schedule(self):
-
-
-
-        # Définir current_date avant de l'utiliser
         current_date = datetime.now().date()
 
-        # Extraire les valeurs des champs de saisie
+        # Récupération des heures d'entrée
         start_hour1 = int(self.ids.start_hour.text)
         start_minute1 = int(self.ids.start_minute.text)
         end_hour1 = int(self.ids.end_hour.text)
@@ -299,59 +320,28 @@ class SuccessScreen(Screen):
         end_hour2 = int(self.ids.end_hour2.text)
         end_minute2 = int(self.ids.end_minute2.text)
 
-        # Utiliser current_date avec dt_time
         start_time1 = datetime.combine(current_date, dt_time(start_hour1, start_minute1))
         end_time1 = datetime.combine(current_date, dt_time(end_hour1, end_minute1))
         start_time2 = datetime.combine(current_date, dt_time(start_hour2, start_minute2))
         end_time2 = datetime.combine(current_date, dt_time(end_hour2, end_minute2))
 
-        # Convertir les temps en timestamps
-        start_timestamp1 = int(start_time1.timestamp())
-        end_timestamp1 = int(end_time1.timestamp())
-        start_timestamp2 = int(start_time2.timestamp())
-        end_timestamp2 = int(end_time2.timestamp())
-
-        # Convertir les timestamps en heure locale française
-        start_time1_fr = datetime.fromtimestamp(start_timestamp1).strftime('%H:%M:%S')
-        end_time1_fr = datetime.fromtimestamp(end_timestamp1).strftime('%H:%M:%S')
-        start_time2_fr = datetime.fromtimestamp(start_timestamp2).strftime('%H:%M:%S')
-        end_time2_fr = datetime.fromtimestamp(end_timestamp2).strftime('%H:%M:%S')
-
-        # Print timestamps to terminal
-        print(f"Start Time 1: {start_time1_fr}")
-        print(f"End Time 1: {end_time1_fr}")
-        print(f"Start Time 2: {start_time2_fr}")
-        print(f"End Time 2: {end_time2_fr}")
-
-
-
-        # Vérifier si les plages horaires sont configurées
         is_schedule1_configured = not (start_hour1 == 0 and start_minute1 == 0 and end_hour1 == 0 and end_minute1 == 0)
         is_schedule2_configured = not (start_hour2 == 0 and start_minute2 == 0 and end_hour2 == 0 and end_minute2 == 0)
 
-        if is_schedule1_configured:
-            if start_timestamp1 >= end_timestamp1:
-                self.ids.bad_message.text = "Plage 1 : échec lors de l'enregistrement"
-                Clock.schedule_once(self.clear_message, 3)
-            #else:
-                # Allumer les leds 1 pendant cette plage horaire
-
-
-        if is_schedule2_configured:
-            if start_timestamp2 >= end_timestamp2:
-                self.ids.bad_message.text = "Plage 2 : échec lors de l'enregistrement"
-                Clock.schedule_once(self.clear_message, 3)
-            #else:
-                # Allumer les leds 2 pendant cette plage horaire
-                
-
-        if not (is_schedule1_configured or is_schedule2_configured):
-            self.ids.bad_message.text = "Aucune plage horaire configurée"
+        if is_schedule1_configured and start_time1 < end_time1:
+            self.ids.good_message.text = "Plage horaire 1 enregistrée"
             Clock.schedule_once(self.clear_message, 3)
-            return
 
-        if self.ids.bad_message.text == "":
-            self.ids.good_message.text = "Enregistrement réussi !"
+        if is_schedule2_configured and start_time2 < end_time2:
+            self.ids.good_message.text = "Plage horaire 2 enregistrée"
+            Clock.schedule_once(self.clear_message, 3)
+
+        if is_schedule1_configured or is_schedule2_configured:
+            # Démarrer la vérification en continu des plages horaires dans un thread séparé
+            threading.Thread(target=self.check_time_and_control_leds, 
+                            args=(start_time1, end_time1, start_time2, end_time2), daemon=True).start()
+        else:
+            self.ids.bad_message.text = "Aucune plage horaire valide"
             Clock.schedule_once(self.clear_message, 3)
 
     def clear_message(self, dt):
