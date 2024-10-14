@@ -105,13 +105,6 @@ class SuccessScreen(Screen):
 
 
 
-
-
-    # Fonction pour mettre à jour l'UI
-    def update_temperature_ui(self, temperature):
-        # Mettre à jour le texte du label de température
-        self.ids.temperature_2.text = f"{temperature}"
-
     def __init__(self, **kwargs):
         super(SuccessScreen, self).__init__(**kwargs)
         # Ajout des variables d'état pour LED 1 et LED 2
@@ -302,10 +295,6 @@ class SuccessScreen(Screen):
 
             time.sleep(1)  # Attendre 1 seconde avant de vérifier à nouveau
 
-
-
-
-
     def save_time_schedule(self):
         current_date = datetime.now().date()
 
@@ -328,11 +317,21 @@ class SuccessScreen(Screen):
         is_schedule1_configured = not (start_hour1 == 0 and start_minute1 == 0 and end_hour1 == 0 and end_minute1 == 0)
         is_schedule2_configured = not (start_hour2 == 0 and start_minute2 == 0 and end_hour2 == 0 and end_minute2 == 0)
 
+        now = datetime.now()
+
         if is_schedule1_configured and start_time1 < end_time1:
+            if now > end_time1:
+                self.ids.bad_message.text = "Plage horaire 1 déjà dépassée"
+                Clock.schedule_once(self.clear_message, 3)
+                return
             self.ids.good_message.text = "Plage horaire 1 enregistrée"
             Clock.schedule_once(self.clear_message, 3)
 
         if is_schedule2_configured and start_time2 < end_time2:
+            if now > end_time2:
+                self.ids.bad_message.text = "Plage horaire 2 déjà dépassée"
+                Clock.schedule_once(self.clear_message, 3)
+                return
             self.ids.good_message.text = "Plage horaire 2 enregistrée"
             Clock.schedule_once(self.clear_message, 3)
 
