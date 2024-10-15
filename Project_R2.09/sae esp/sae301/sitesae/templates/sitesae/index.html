@@ -251,6 +251,9 @@
             <option value="2">Prise 2</option>
         </select>
         <br>
+        <label for="temperature_threshold">Seuil de température (en °C) :</label>
+        <input type="number" id="temperature_threshold" name="temperature_threshold" step="0.1" placeholder="ex : 30.5" min="0">
+        <br>
         
         <label for="start_time">Heure de début :</label>
         <input type="time" id="start_time" name="start_time" required>
@@ -305,8 +308,8 @@
     </form>
     <script>
         setInterval(function() {
-            fetch('/enforce_schedules/');
-        }, 60000);
+            fetch('/enforce_schedules/'); // Appel de l'URL pour forcer l'application des plages horaires / envoyer des notifications / toute les 10 secondes
+        }, 15000);
         function updateTemperature() {
             fetch('/temperature/')
                 .then(response => response.json())
