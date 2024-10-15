@@ -2,11 +2,13 @@ from django.db import models
 from datetime import datetime
 
 class Schedule(models.Model):
-    start_time = models.TimeField()  # Heure de début
-    end_time = models.TimeField()  # Heure de fin
-    prise_id = models.IntegerField()  # ID de la prise
-    email = models.EmailField(default="")  # Adresse email
-    phone = models.CharField(max_length=15, blank=True, default="")
+    prise_id = models.IntegerField()
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+    email = models.EmailField(default="")
+    phone = models.CharField(max_length=15, blank=True)
+    is_active = models.BooleanField(default=False)
+    temperature_threshold = models.FloatField(null=True, blank=True)
     
 
     def is_active(self):
