@@ -2,7 +2,7 @@ import paho.mqtt.client as mqtt
 import time
 
 class MQTT():
-    def __init__(self, broker="broker.hivemq.com", topic="IUT/SAE3.01/prise", username=None, password=None):
+    def __init__(self, broker="192.168.179.24", topic="IUT/SAE3.01/prise", username="toto", password="toto"):
         self.__broker = broker
         self.__topics = topic
         self.__username = username
