@@ -37,14 +37,18 @@ TWILIO_SID = ('AC0c11fe84fa3f524ec942de5b2babc2e4')
 TWILIO_AUTH_TOKEN = ('75bacabdb073bf974ee3dc45cb28bbd1')
 TWILIO_PHONE_NUMBER = ('+13344024583')
 
-# Function to send SMS using Twilio
+
 def send_sms(to_phone, body):
     client = Client(TWILIO_SID, TWILIO_AUTH_TOKEN)
-    message = client.messages.create(
-        body=body,
-        from_=TWILIO_PHONE_NUMBER,
-        to=to_phone
-    )
+    try:
+        message = client.messages.create(
+            body=body,
+            from_=TWILIO_PHONE_NUMBER,
+            to=to_phone
+        )
+        print(f"SMS envoyé avec succès à {to_phone}")
+    except Exception as e:
+        print(f"Erreur lors de l'envoi du SMS : {e}")
 
 def index(request):
     if 'user' not in request.session:
@@ -201,6 +205,8 @@ def check_schedule_for_prise(prise_id):
 
     return False  # En dehors des plages, prise doit être éteinte
 
+
+
 def check_schedules_and_control_prises():
     current_time = make_aware(datetime.now()).time()
 
@@ -208,32 +214,38 @@ def check_schedules_and_control_prises():
         schedules = Schedule.objects.filter(prise_id=prise_id)
         is_within_schedule = False
         user_email = None
-        user_phone = None  # Assume there's a way to fetch user phone
+        user_phone = None
+        temperature_threshold = 0
 
         for schedule in schedules:
             if schedule.start_time <= current_time <= schedule.end_time:
                 is_within_schedule = True
                 user_email = schedule.email
-                user_phone = schedule.phone  # Assuming you have this
+                user_phone = schedule.phone
+                temperature_threshold = schedule.temperature_threshold  
                 break
 
         current_state = prise_states.get(prise_id, 'off')
 
+        
+        current_temperature = float(mqtt_client_temperature.get_messages()) 
+
+        
+        if current_temperature > temperature_threshold:
+            subject = f"Alerte : Température dépassée pour la prise {prise_id}"
+            body = f"La température actuelle est de {current_temperature}°C, dépassant le seuil de {temperature_threshold}°C."
+            send_email(user_email, subject, body, to_phone=user_phone)
+
+        # Logique d'allumage/éteignage des prises
         if is_within_schedule and current_state == 'off':
-            send_email(user_email, "Entrée dans la plage horaire", f"La prise {prise_id} est maintenant active.", to_phone=user_phone)
-        elif not is_within_schedule and current_state == 'on':
-            send_email(user_email, "Sortie de la plage horaire", f"La prise {prise_id} est maintenant inactive.", to_phone=user_phone)
-
-
-        # Mise à jour de l'état des prises
-        if is_within_schedule:
             mqtt_client_led_1.envoi(f"led_{prise_id}_on")
             mqtt_client_led_2.envoi(f"led_{prise_id}_on")
             prise_states[prise_id] = 'on'
-        else:
+        elif not is_within_schedule and current_state == 'on':
             mqtt_client_led_1.envoi(f"led_{prise_id}_off")
             mqtt_client_led_2.envoi(f"led_{prise_id}_off")
             prise_states[prise_id] = 'off'
+
 
 
 
@@ -251,21 +263,24 @@ def schedule_view(request):
 
 def enforce_schedules(request):
     check_schedules_and_control_prises()
+    
     return redirect('sitesae/index')
+
+
 
 def add_schedule(request):
     if request.method == 'POST':
         form = ScheduleForm(request.POST)
         if form.is_valid():
             schedule = form.save(commit=False)
-            email = form.cleaned_data['email']
-            phone = form.cleaned_data.get('phone')  # Assuming you have a phone field in the form
+            email = form.cleaned_data['email']  # Email de l'utilisateur
+            phone = form.cleaned_data.get('phone')  # Téléphone de l'utilisateur, s'il est présent
             schedule.save()
 
-            # Send notification after creation
+            
             subject = "Nouveau planning créé"
-            body = f"Un nouveau planning a été créé : \nPrise: {schedule.prise_id}\nDébut: {schedule.start_time}\nFin: {schedule.end_time}"
-            send_email(email, subject, body, to_phone=phone)  # Include phone for SMS
+            body = f"Un nouveau planning a été créé pour la prise {schedule.prise_id}, de {schedule.start_time} à {schedule.end_time}."
+            send_email(email, subject, body, to_phone=phone)  # Envoi d'email et SMS si le téléphone est fourni
 
             messages.success(request, 'Plage horaire ajoutée avec succès !')
             return redirect('sitesae/index')
@@ -275,58 +290,19 @@ def add_schedule(request):
     return render(request, 'sitesae/add_schedule.html', {'form': form})
 
 
-# class MQTT():
-#     def __init__(self, broker="broker.hivemq.com", topic="IUT/led_1"):
-#         self.__broker = broker
-#         self.__topics = topic
-#         self.__client = None
-#         self.__message = None
-    
-#     # fonction pour subcribe au topic MQTT
-#     def __on_connect(self, client, userdata, flags, rc):
-#         print(f"Connected with result code {rc}")
-#         client.subscribe(self.__topics)
-
-#     # fonction pour lire les messages
-#     def __on_message(self, client, userdata, msg):
-#         message = msg.payload.decode()  # récupère les messages
-#         self.__message = message
-
-#     # fonction d'envoi de message via MQTT
-#     def envoi(self, message):
-#         if self.__client:
-#             try:
-#                 self.__client.publish(self.__topics, message)  # envoi du message
-#                 print("Message envoyé")
-#             except Exception as e:
-#                 print(f"Erreur : message non envoyé, {e}")
-#         else:
-#             print("Client non connecté")
-
-#     # fonction pour retourner les messages reçus
-#     def get_messages(self):
-#         return self.__message  # Simplifier la logique ici
-
-#     # fonction pour initialiser la connection et créer le client MQTT 
-#     def connection(self):
-#         self.__client = mqtt.Client()
-#         self.__client.on_connect = self.__on_connect
-#         self.__client.on_message = self.__on_message
-#         self.__client.connect(self.__broker, 1883, 60)
-#         self.__client.loop_start()  # utiliser loop_start() pour démarrer la boucle de réception dans un thread séparé
 
 def delete_schedule(request, schedule_id):
     if request.method == 'POST':
         # Récupérer le planning à supprimer
         schedule = get_object_or_404(Schedule, id=schedule_id)
-        email = schedule.email  # Récupérer l'email associé au planning
-        phone = schedule.phone  # Récupérer le numéro de téléphone associé au planning
+        email = schedule.email  # Email associé au planning
+        phone = schedule.phone  # Numéro de téléphone associé, s'il existe
         schedule.delete()
 
-        # Send notification after deletion
+        # Envoyer la notification après suppression
         subject = "Planning supprimé"
         body = f"Le planning pour la prise {schedule.prise_id} a été supprimé."
-        send_email(email, subject, body, to_phone=phone)  # Include phone for SMS
+        send_email(email, subject, body, to_phone=phone)
 
         messages.success(request, "Planning supprimé avec succès !")
     return redirect('sitesae/index')
@@ -353,12 +329,40 @@ def get_led_status(request):
     })
 
 
+# def send_email(to_email, subject, body, to_phone=None):
+#     from_email = "l.petit02400@gmail.com"
+#     from_password = "dfyh xbiv nxft sqdv"
+    
+#     # Configuration du serveur SMTP de Gmail
+#     server = smtplib.SMTP('smtp.gmail.com', 587) #587 for TLS
+#     server.starttls()
+    
+#     try:
+#         # Connexion au compte Gmail
+#         server.login(from_email, from_password)
+
+#         # Création du message
+#         msg = MIMEMultipart()
+#         msg['From'] = from_email
+#         msg['To'] = to_email
+#         msg['Subject'] = subject
+#         msg.attach(MIMEText(body, 'plain'))
+
+#         # Envoi de l'email
+#         server.sendmail(from_email, to_email, msg.as_string())
+#         print(f"Email envoyé avec succès à {to_email}")
+#         if to_phone:
+#             send_sms(to_phone, body)
+#     except Exception as e:
+#         print(f"Erreur lors de l'envoi de l'email: {e}")
+#     finally:
+#         server.quit()
 def send_email(to_email, subject, body, to_phone=None):
     from_email = "l.petit02400@gmail.com"
     from_password = "dfyh xbiv nxft sqdv"
     
     # Configuration du serveur SMTP de Gmail
-    server = smtplib.SMTP('smtp.gmail.com', 587) #587 for TLS
+    server = smtplib.SMTP('smtp.gmail.com', 587)  # Port 587 pour TLS
     server.starttls()
     
     try:
@@ -375,10 +379,14 @@ def send_email(to_email, subject, body, to_phone=None):
         # Envoi de l'email
         server.sendmail(from_email, to_email, msg.as_string())
         print(f"Email envoyé avec succès à {to_email}")
+
+        # Envoi d'un SMS si le numéro de téléphone est fourni
         if to_phone:
             send_sms(to_phone, body)
+    
     except Exception as e:
         print(f"Erreur lors de l'envoi de l'email: {e}")
+    
     finally:
         server.quit()
 
