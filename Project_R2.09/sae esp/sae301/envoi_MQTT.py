@@ -58,7 +58,7 @@ if __name__ == "__main__":
 
 
 #Version sans le broker privé :
-import paho.mqtt.client as mqtt
+#import paho.mqtt.client as mqtt
 # import time
 
 # class MQTT():
