@@ -30,6 +30,8 @@ mqtt_client_led_2_état = MQTT(topic="IUT/etat/led_2")  # LED 2 etat
 mqtt_client_temperature.connection()
 mqtt_client_led_1.connection()
 mqtt_client_led_2.connection()
+mqtt_client_led_1_état.connection()
+mqtt_client_led_2_état.connection()
 
 TWILIO_SID = ('AC0c11fe84fa3f524ec942de5b2babc2e4')
 TWILIO_AUTH_TOKEN = ('75bacabdb073bf974ee3dc45cb28bbd1')
@@ -87,28 +89,36 @@ def turn_on(request, prise_id):
     # Envoyer un message MQTT pour allumer une prise
     if prise_id == 1:
         mqtt_client_led_1.envoi("led_1_on")
+        mqtt_client_led_1_état.envoi("led_1_on")
     elif prise_id == 2:
         mqtt_client_led_2.envoi("led_2_on")
+        mqtt_client_led_2_état.envoi("led_2_on")
     return redirect('sitesae/index')
 
 def turn_off(request, prise_id):
     # Envoyer un message MQTT pour éteindre une prise
     if prise_id == 1:
         mqtt_client_led_1.envoi("led_1_off")
+        mqtt_client_led_1_état.envoi("led_1_off")
     elif prise_id == 2:
         mqtt_client_led_2.envoi("led_2_off")
+        mqtt_client_led_2_état.envoi("led_2_off")
     return redirect('sitesae/index')
 
 def turn_on_all(request):
     # Envoyer un message MQTT pour allumer les deux prises
     mqtt_client_led_1.envoi("led_1_on")
     mqtt_client_led_2.envoi("led_2_on")
+    mqtt_client_led_1_état.envoi("led_1_on")
+    mqtt_client_led_2_état.envoi("led_2_on")
     return redirect('sitesae/index')
 
 def turn_off_all(request):
     # Envoyer un message MQTT pour éteindre les deux prises
     mqtt_client_led_1.envoi("led_1_off")
     mqtt_client_led_2.envoi("led_2_off")
+    mqtt_client_led_1_état.envoi("led_1_off")
+    mqtt_client_led_2_état.envoi("led_2_off")
     return redirect('sitesae/index')
 
 
@@ -265,45 +275,45 @@ def add_schedule(request):
     return render(request, 'sitesae/add_schedule.html', {'form': form})
 
 
-class MQTT():
-    def __init__(self, broker="broker.hivemq.com", topic="IUT/led_1"):
-        self.__broker = broker
-        self.__topics = topic
-        self.__client = None
-        self.__message = None
+# class MQTT():
+#     def __init__(self, broker="broker.hivemq.com", topic="IUT/led_1"):
+#         self.__broker = broker
+#         self.__topics = topic
+#         self.__client = None
+#         self.__message = None
     
-    # fonction pour subcribe au topic MQTT
-    def __on_connect(self, client, userdata, flags, rc):
-        print(f"Connected with result code {rc}")
-        client.subscribe(self.__topics)
+#     # fonction pour subcribe au topic MQTT
+#     def __on_connect(self, client, userdata, flags, rc):
+#         print(f"Connected with result code {rc}")
+#         client.subscribe(self.__topics)
 
-    # fonction pour lire les messages
-    def __on_message(self, client, userdata, msg):
-        message = msg.payload.decode()  # récupère les messages
-        self.__message = message
+#     # fonction pour lire les messages
+#     def __on_message(self, client, userdata, msg):
+#         message = msg.payload.decode()  # récupère les messages
+#         self.__message = message
 
-    # fonction d'envoi de message via MQTT
-    def envoi(self, message):
-        if self.__client:
-            try:
-                self.__client.publish(self.__topics, message)  # envoi du message
-                print("Message envoyé")
-            except Exception as e:
-                print(f"Erreur : message non envoyé, {e}")
-        else:
-            print("Client non connecté")
+#     # fonction d'envoi de message via MQTT
+#     def envoi(self, message):
+#         if self.__client:
+#             try:
+#                 self.__client.publish(self.__topics, message)  # envoi du message
+#                 print("Message envoyé")
+#             except Exception as e:
+#                 print(f"Erreur : message non envoyé, {e}")
+#         else:
+#             print("Client non connecté")
 
-    # fonction pour retourner les messages reçus
-    def get_messages(self):
-        return self.__message  # Simplifier la logique ici
+#     # fonction pour retourner les messages reçus
+#     def get_messages(self):
+#         return self.__message  # Simplifier la logique ici
 
-    # fonction pour initialiser la connection et créer le client MQTT 
-    def connection(self):
-        self.__client = mqtt.Client()
-        self.__client.on_connect = self.__on_connect
-        self.__client.on_message = self.__on_message
-        self.__client.connect(self.__broker, 1883, 60)
-        self.__client.loop_start()  # utiliser loop_start() pour démarrer la boucle de réception dans un thread séparé
+#     # fonction pour initialiser la connection et créer le client MQTT 
+#     def connection(self):
+#         self.__client = mqtt.Client()
+#         self.__client.on_connect = self.__on_connect
+#         self.__client.on_message = self.__on_message
+#         self.__client.connect(self.__broker, 1883, 60)
+#         self.__client.loop_start()  # utiliser loop_start() pour démarrer la boucle de réception dans un thread séparé
 
 def delete_schedule(request, schedule_id):
     if request.method == 'POST':
