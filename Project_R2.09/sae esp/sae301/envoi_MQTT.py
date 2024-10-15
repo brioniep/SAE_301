@@ -2,45 +2,50 @@ import paho.mqtt.client as mqtt
 import time
 
 class MQTT():
-    def __init__(self, broker="broker.hivemq.com", topic="IUT/led_1"):
+    def __init__(self, broker="toto.local", topic="IUT/SAE3.01/prise", username="toto", password="toto"):
         self.__broker = broker
         self.__topics = topic
+        self.__username = username
+        self.__password = password
         self.__client = None
-        self.__message = None
+        self.__message = "None"
     
-    # Fonction pour s'abonner au topic MQTT
+    # fonction pour subcribe au topic MQTT
     def __on_connect(self, client, userdata, flags, rc):
         print(f"Connected with result code {rc}")
         client.subscribe(self.__topics)
 
-    # Fonction pour lire les messages
+    # fonction pour lire les messages
     def __on_message(self, client, userdata, msg):
-        message = msg.payload.decode()  # Récupère les messages
+        message = msg.payload.decode() # récupere les messages
         self.__message = message
 
-    # Fonction d'envoi de message via MQTT
+    # fonction d'envoi de message via MQTT
     def envoi(self, message):
         if self.__client:
             try:
-                self.__client.publish(self.__topics, message)  # Envoi du message
-                print("Message envoyé")
+                self.__client.publish(self.__topics, message) # envoi du message
+                print("message envoyé")
             except:
-                print("Erreur : message non envoyé")
+                print("erreur : message non envoyé")
         else:
             print("Client non connecté")
 
-    # Fonction pour retourner les messages reçus
+    # fonction pour retourner les messages reçus
     def get_messages(self):
         if self.__message is not None:
             return self.__message
-
-    # Fonction pour initialiser la connexion et créer le client MQTT 
+    
+    # fonction pour initialiser la connection et creer le client MQTT 
     def connection(self):
         self.__client = mqtt.Client()
+        if self.__username and self.__password:
+            self.__client.username_pw_set(self.__username, self.__password)
         self.__client.on_connect = self.__on_connect
         self.__client.on_message = self.__on_message
         self.__client.connect(self.__broker, 1883, 60)
-        self.__client.loop_start()  # Utiliser loop_start() pour démarrer la boucle de réception dans un thread séparé
+        self.__client.loop_start()  # utiliser loop_start() pour démarrer la boucle de réception dans un thread séparé
+
 
 if __name__ == "__main__":
     envoyeur = MQTT()
